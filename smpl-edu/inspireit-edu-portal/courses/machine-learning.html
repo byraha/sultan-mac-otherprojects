@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machine Learning — InspireIT Edu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #06060f; color: #fff; line-height: 1.6; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+    .course-nav { padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(6,6,15,0.95); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; }
+    .course-nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .course-nav .logo { font-size: 18px; font-weight: 700; background: linear-gradient(135deg, #ff9900, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .course-nav .logo i { -webkit-text-fill-color: #ff9900; }
+    .course-nav .back-link { color: #ff9900; text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.3s; white-space: nowrap; }
+    .course-nav .back-link:hover { color: #fff; }
+    .course-hero { padding: 60px 0 40px; text-align: center; }
+    .course-hero .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 50px; background: rgba(255,153,0,0.08); border: 1px solid rgba(255,153,0,0.15); font-size: 12px; font-weight: 600; color: #ffb347; margin-bottom: 20px; }
+    .course-hero h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 900; margin-bottom: 12px; }
+    .course-hero h1 span { background: linear-gradient(135deg, #ff9900, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .course-hero p { font-size: 16px; color: rgba(255,255,255,0.5); max-width: 650px; margin: 0 auto; line-height: 1.8; }
+    .quick-info { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin: 32px 0 48px; }
+    .quick-info-item { text-align: center; }
+    .quick-info-item .num { font-size: 26px; font-weight: 800; color: #ff9900; }
+    .quick-info-item p { font-size: 13px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+    .section { padding: 48px 0; border-top: 1px solid rgba(255,255,255,0.04); }
+    .section h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .section h2 i { color: #ff9900; }
+    .section > p { font-size: 15px; color: rgba(255,255,255,0.55); margin-bottom: 20px; }
+    .curriculum { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .curriculum li { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 20px 24px; }
+    .curriculum li strong { color: #fff; display: block; margin-bottom: 4px; font-size: 15px; }
+    .curriculum li span { font-size: 14px; color: rgba(255,255,255,0.5); display: block; }
+    .curriculum li .lab { font-size: 13px; color: #ff9900; margin-top: 6px; display: block; font-weight: 500; }
+    .build-box { background: linear-gradient(135deg, rgba(255,153,0,0.04), rgba(255,107,107,0.04)); border: 1px solid rgba(255,153,0,0.08); border-radius: 16px; padding: 32px; margin: 32px 0; }
+    .build-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .build-box h3 i { color: #ff9900; }
+    .build-box p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .why-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 20px; }
+    .why-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .why-item h4 i { color: #ff9900; margin-right: 6px; }
+    .why-item p { font-size: 13px; color: rgba(255,255,255,0.45); }
+    .cta-section { text-align: center; padding: 60px 0; }
+    .cta-section h2 { font-size: 26px; font-weight: 800; margin-bottom: 12px; }
+    .cta-section p { color: rgba(255,255,255,0.5); margin-bottom: 24px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; text-decoration: none; transition: all 0.3s; }
+    .btn-primary { background: linear-gradient(135deg, #ff9900, #ff6b6b); border: none; color: #fff; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,153,0,0.3); }
+    .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #fff; }
+    .btn-outline:hover { border-color: #ff9900; transform: translateY(-2px); }
+    .course-footer { text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.3); font-size: 13px; }
+    .course-footer a { color: #ff9900; text-decoration: none; }
+    .btn-wrap { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    @media (max-width: 768px) { .why-grid { grid-template-columns: 1fr; } .quick-info { gap: 24px; } .curriculum li { padding: 16px 18px; } .build-box { padding: 24px; } .btn-wrap { flex-direction: column; align-items: center; } }
+    .scroll-top {
+      position: fixed; bottom: 30px; right: 30px; z-index: 999;
+      background: linear-gradient(135deg, #ff9900, #ff6b6b); color: #fff;
+      border: none; border-radius: 50px; padding: 12px 24px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 20px rgba(255,153,0,0.3);
+      opacity: 0; visibility: hidden; transform: translateY(20px);
+      transition: all 0.3s;
+    }
+    .scroll-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .scroll-top:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(255,153,0,0.4); }
+  </style>
+</head>
+<body>
+  <nav class="course-nav">
+    <div class="container course-nav-inner">
+      <a href="../index.html" class="logo"><i class="fas fa-graduation-cap"></i> InspireIT Edu</a>
+      <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="course-hero">
+      <div class="badge"><i class="fas fa-graduation-cap"></i> Aligned with Machine Learning (Sem 6)</div>
+      <h1>Machine <span>Learning</span></h1>
+      <p>Go beyond Jupyter notebooks. Learn to build, deploy, and monitor real ML models — the way it's done in production at actual companies.</p>
+      <div class="quick-info">
+        <div class="quick-info-item"><div class="num">5</div><p>Weeks</p></div>
+        <div class="quick-info-item"><div class="num">Basic</div><p>Coding Helpful</p></div>
+        <div class="quick-info-item"><div class="num">1</div><p>Real Project</p></div>
+        <div class="quick-info-item"><div class="num">100%</div><p>Hands-On</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><i class="fas fa-book-open"></i> What You'll Learn — Week by Week</h2>
+      <p>College teaches ML in Jupyter notebooks. Industry runs ML in production. This course bridges that gap and makes you hireable as an ML engineer.</p>
+      <ul class="curriculum">
+        <li><strong>Week 1 — Organizing ML Projects Properly</strong><span>Move beyond messy notebooks. Learn how professional ML teams structure projects, track experiments, and version their data and models.</span><span class="lab"><i class="fas fa-flask"></i> Lab: Set up a well-structured ML project with experiment tracking</span></li>
+        <li><strong>Week 2 — Turning Models into APIs</strong><span>Take a trained ML model and turn it into a web API that other applications can call. Learn FastAPI and Docker for ML.</span><span class="lab"><i class="fas fa-flask"></i> Lab: Containerize an ML model and serve it as a REST API</span></li>
+        <li><strong>Week 3 — Deploying ML on the Cloud</strong><span>Put your ML model into production on AWS or Azure so it can handle real traffic with auto-scaling.</span><span class="lab"><i class="fas fa-flask"></i> Lab: Deploy your ML model to the cloud with auto-scaling endpoint</span></li>
+        <li><strong>Week 4 — Monitoring & Improving Models</strong><span>Set up monitoring to track model performance in production. Detect when models get stale and need retraining.</span><span class="lab"><i class="fas fa-flask"></i> Lab: Build a monitoring dashboard that tracks your model's performance</span></li>
+        <li><strong>Week 5 — ML Pipeline & Final Project</strong><span>Set up automated pipelines that train, test, and deploy ML models automatically. Bring everything together.</span><span class="lab"><i class="fas fa-star"></i> Final Project: Complete production ML system with CI/CD, deployment, monitoring, and auto-retraining</span></li>
+      </ul>
+    </div>
+
+    <div class="build-box">
+      <h3><i class="fas fa-hammer"></i> What You'll Build</h3>
+      <p>An end-to-end production ML system: structured pipeline → containerized API → cloud deployment → monitoring dashboard → automated retraining. This is the kind of project that lands ML internships.</p>
+    </div>
+
+    <div class="section">
+      <h2><i class="fas fa-star"></i> Why Take This Course</h2>
+      <div class="why-grid">
+        <div class="why-item"><h4><i class="fas fa-hand-pointer"></i> Hands-On from Day 1</h4><p>You start building immediately. By week 2, you'll have a working ML API that you can access from anywhere.</p></div>
+        <div class="why-item"><h4><i class="fas fa-briefcase"></i> What Employers Want</h4><p>Knowing ML theory isn't enough. Companies need people who can deploy, monitor, and maintain ML systems in production.</p></div>
+        <div class="why-item"><h4><i class="fas fa-graduation-cap"></i> Direct VTU Alignment</h4><p>Maps to Machine Learning (Sem 6) — takes what you learn in theory and shows you how to actually use it in the real world.</p></div>
+        <div class="why-item"><h4><i class="fas fa-certificate"></i> MLOps Skills</h4><p>Learn MLflow, FastAPI, Docker, cloud ML services — the exact tools used by ML engineers at companies like Uber, Netflix, and Amazon.</p></div>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <h2>Ready to Build Production ML?</h2>
+      <p>Stop running models in Jupyter. Learn how ML really works at companies that actually hire.</p>
+      <div class="btn-wrap">
+        <a href="../index.html#contact" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enroll Now</a>
+        <a href="../index.html" class="btn btn-outline"><i class="fas fa-home"></i> Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="course-footer">
+    <p>&copy; 2026 InspireIT Edu — <a href="../index.html">Cloud & AI Career Academy</a></p>
+  </footer>
+  <button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i> InspireIT Edu</button>
+  <script>window.addEventListener('scroll',()=>{const st=document.querySelector('.scroll-top');if(st)st.classList.toggle('visible',window.scrollY>500)});</script>
+</body>
+</html>

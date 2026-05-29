@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CI/CD</title>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --border: #334155;
+    --text: #e2e8f0; --muted: #94a3b8;
+    --azure: #0078d4; --aws: #ff9900; --gcp: #4285f4;
+    --accent: #38bdf8; --green: #22c55e; --red: #ef4444;
+    --code-bg: #0b1120; --nav-bg: #0b1424;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .topnav { background: var(--nav-bg); border-bottom: 1px solid var(--border); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; position: sticky; top: 0; z-index: 10; flex-wrap: wrap; }
+  .topnav .logo { font-weight: 700; font-size: 1.1rem; background: linear-gradient(135deg, #38bdf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .topnav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; padding: 0.35rem 0.75rem; border-radius: 6px; transition: all 0.2s; }
+  .topnav a:hover, .topnav a.active { color: var(--text); background: rgba(56,189,248,0.1); }
+  .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+  header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  header h1 { font-size: 2rem; background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.4rem; }
+  header .subtitle { color: var(--muted); font-size: 1rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; color: var(--accent); }
+  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  @media (max-width: 900px) { .cards-3 { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); }
+  .card.azure { border-top: 3px solid var(--azure); } .card.aws { border-top: 3px solid var(--aws); } .card.gcp { border-top: 3px solid var(--gcp); }
+  .card h4 { font-size: 1rem; margin-bottom: 0.75rem; color: var(--text); }
+  .card p, .card li { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.4rem; }
+  .card ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  th, td { padding: 0.75rem 1rem; text-align: left; font-size: 0.86rem; }
+  th { background: #1a2744; font-weight: 700; border-bottom: 2px solid var(--border); }
+  td { border-bottom: 1px solid #1e293b; } tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
+  pre, code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.8rem; }
+  .code-block { background: var(--code-bg); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border); overflow-x: auto; margin: 0.75rem 0 1.5rem; }
+  .code-block pre { color: #cbd5e1; line-height: 1.65; }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge.yes { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge.no { background: rgba(239,68,68,0.15); color: var(--red); }
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+  .comparison-row { display: grid; grid-template-columns: 200px 1fr 1fr 1fr; gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 2rem; }
+  .comparison-row > div { background: var(--card); padding: 0.9rem 1rem; }
+  .comparison-row .rlabel { font-weight: 700; font-size: 0.88rem; background: #1a2744; }
+  @media (max-width: 900px) { .comparison-row { grid-template-columns: 1fr 1fr 1fr; } .comparison-row .rlabel { display: none; } }
+  @media (max-width: 600px) { .comparison-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="logo">Sultan's Cloud Shaping</a>
+  <a href="index.html">Portal</a>
+  <a href="wif.html">WIF</a>
+  <a href="deny-policies.html">Deny Policies</a>
+</nav>
+
+<div class="container">
+<header><h1>CI/CD</h1><p class="subtitle">Continuous Integration & Deployment &mdash; Azure &middot; AWS &middot; GCP</p></header>
+<h2>Concept</h2><p style="color:var(--muted);margin-bottom:1.5rem;">CI/CD pipelines automate build, test, and deployment. Each cloud offers managed CI/CD services that integrate with their native compute and artifact registries.</p><div class="comparison-row"><div class="rlabel">Managed CI/CD</div><div>Azure DevOps / GitHub Actions</div><div>CodePipeline + CodeBuild + CodeDeploy</div><div>Cloud Build + Cloud Deploy</div></div><div class="comparison-row"><div class="rlabel">Artifact Registry</div><div>Azure Container Registry (ACR)</div><div>ECR (Elastic Container Registry)</div><div>Artifact Registry (Docker, Maven, npm, Python, Helm)</div></div><div class="comparison-row"><div class="rlabel">Deploy Targets</div><div>AKS, App Service, Container Apps</div><div>EKS, ECS, Lambda, EC2</div><div>GKE, Cloud Run, Cloud Functions, App Engine</div></div><div class="comparison-row"><div class="rlabel">Secrets Mgmt</div><div>Azure Key Vault</div><div>Secrets Manager / SSM</div><div>Secret Manager</div></div><div class="comparison-row"><div class="rlabel">Approval Gates</div><div>Environments + Approvals</div><div>Manual Approval Action</div><div>Cloud Deploy Approval Promotion</div></div><h2>Azure DevOps Pipeline (YAML)</h2><div class="code-block"><pre>trigger:
+  branches:
+    include: [main]
+pool: ubuntu-latest
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildAndPush
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: my-acr
+        repository: platform/payments
+        tags: $(Build.BuildId)
+- stage: Deploy
+  jobs:
+  - deployment: DeployToProd
+    environment: prod
+    steps:
+    - task: HelmDeploy@0
+      inputs:
+        command: upgrade
+        chartPath: $(Pipeline.Workspace)/helm
+        releaseName: payments-release
+        namespace: prod</pre></div><h2>GCP Cloud Build (cloudbuild.yaml)</h2><div class="code-block"><pre>steps:
+- name: gcr.io/cloud-builders/docker
+  args: [build, -t, us-central1-docker.pkg.dev/$PROJECT_ID/repo/payments:$SHORT_SHA, .]
+- name: gcr.io/cloud-builders/docker
+  args: [push, us-central1-docker.pkg.dev/$PROJECT_ID/repo/payments:$SHORT_SHA]
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoint: bash
+  args:
+  - -c
+  - |
+    gcloud container clusters get-credentials my-cluster --region us-central1
+    helm upgrade payments-release ./helm/payments -n prod --set image.tag=$SHORT_SHA
+images:
+- us-central1-docker.pkg.dev/$PROJECT_ID/repo/payments:$SHORT_SHA</pre></div><h2>GitHub Actions (Cloud-Agnostic via WIF)</h2><div class="code-block"><pre>name: Build & Deploy
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+        service_account: ${{ vars.CICD_SA }}
+    - run: |
+        docker build -t $REGISTRY/payments:$GITHUB_SHA .
+        docker push $REGISTRY/payments:$GITHUB_SHA
+    - run: |
+        gcloud container clusters get-credentials $CLUSTER --region $REGION
+        helm upgrade payments-release ./helm -n prod --set image.tag=$GITHUB_SHA</pre></div>
+<footer>Built for learning &amp; reference &mdash; <span style="color:var(--accent);">Sultan's Cloud Shaping</span></footer></div></body></html>

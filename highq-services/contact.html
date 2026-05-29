@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="nav.brand">Contact Us — High Q Services | Get in Touch Bangalore</title>
+  <meta name="description" content="Contact High Q Services in Bangalore. Call 9900051336, email Highqservices02@gmail.com, or visit our R.T Nagar office." />
+  <link rel="icon" href="logo.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand"><div class="brand-icon"><img src="logo.jpg" alt="High Q Services" /></div><div class="brand-text"><span class="brand-name" data-i18n="nav.brand">High Q Services</span><span class="brand-tagline" data-i18n="nav.tagline">Enhancing Life Beyond Limits</span></div></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" data-i18n="nav.home">Home</a></li><li><a href="about.html" data-i18n="nav.about">About</a></li><li><a href="services.html" data-i18n="nav.services">Services</a></li><li><a href="gallery.html" data-i18n="nav.gallery">Gallery</a></li><li><a href="contact.html" class="active" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="langSwitcher">
+          <a href="#" class="lang-en active">EN</a>
+          <a href="#" class="lang-kn">ಕನ್ನಡ</a>
+        </div>
+        <a href="catering.html" class="btn btn-primary btn-sm" data-i18n="nav.catering">Order Catering</a>
+        <a href="tel:9900051336" class="btn btn-outline btn-sm btn-nav"><i class="fas fa-phone"></i> <span data-i18n="nav.call">9900051336</span></a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="page-header"><div class="container"><span class="section-label" data-i18n="contact.header.label">Contact</span><h1 data-i18n-html="true" data-i18n="contact.header.title">Get in <span class="accent-text">Touch</span></h1><p data-i18n="contact.header.desc">Have a question, need a quote, or want to discuss a project? We'd love to hear from you.</p></div></section>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <h2 class="section-title" data-i18n-html="true" data-i18n="contact.info.title">Let's Start a <span class="accent-text">Conversation</span></h2>
+          <p data-i18n="contact.info.desc">Reach out through any of the channels below, or fill in the form and we'll get back to you within 24 hours.</p>
+          <div class="contact-details">
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div><div><h4 data-i18n="contact.address">Our Address</h4><p data-i18n-html="true" data-i18n="contact.address.val">NO.54/8/13, 8th Cross, C.L.R Layout,<br />R.T Nagar, Bangalore - 560032</p></div></div>
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-phone-alt"></i></div><div><h4 data-i18n="contact.phone">Phone</h4><p><a href="tel:9900051336">+91 9900051336</a></p></div></div>
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-envelope"></i></div><div><h4 data-i18n="contact.email">Email</h4><p><a href="mailto:Highqservices02@gmail.com">Highqservices02@gmail.com</a></p></div></div>
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-clock"></i></div><div><h4 data-i18n="contact.hours">Business Hours</h4><p data-i18n-html="true" data-i18n="contact.hours.val">Monday - Saturday: 9:00 AM - 7:00 PM<br />Sunday: Closed</p></div></div>
+          </div>
+          <div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.438181740543!2d77.591973!3d13.017292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae17c8e0c1d7e1%3A0x8c8c9c9c9c9c9c9c!2sR.T.%20Nagar%2C%20Bangalore!5e0!3m2!1sen!2sin!4v1" allowfullscreen="" loading="lazy"></iframe></div>
+        </div>
+        <div class="contact-form-wrap reveal" data-delay="0.2">
+          <div class="card form-card">
+            <h3 data-i18n="contact.form.title">Send Us a Message</h3>
+            <form id="contactForm" class="contact-form" action="https://formspree.io/f/mvgonlrg" method="POST">
+              <div class="form-row"><div class="form-group"><label for="name" data-i18n="contact.form.name">Full Name *</label><input type="text" id="name" name="name" required data-i18n="contact.form.name.placeholder" placeholder="Your full name" /></div><div class="form-group"><label for="email" data-i18n="contact.form.email">Email Address *</label><input type="email" id="email" name="email" required data-i18n="contact.form.email.placeholder" placeholder="your@email.com" /></div></div>
+              <div class="form-row"><div class="form-group"><label for="phone" data-i18n="contact.form.phone">Phone Number</label><input type="tel" id="phone" name="phone" data-i18n="contact.form.phone.placeholder" placeholder="+91 98765 43210" /></div><div class="form-group"><label for="service" data-i18n="contact.form.service">Service Interested In</label><select id="service" name="service"><option value="" data-i18n="contact.form.service.default">Select a service...</option><option value="Catering" data-i18n="contact.form.service.1">Catering & Food Supply</option><option value="Fruits" data-i18n="contact.form.service.2">Fresh Fruits Supply</option><option value="Facility" data-i18n="contact.form.service.3">Facilities Management</option><option value="Manpower" data-i18n="contact.form.service.4">Manpower Support</option><option value="Crockery" data-i18n="contact.form.service.5">Crockery & Miscellaneous</option><option value="IT" data-i18n="contact.form.service.6">IT Sales & Services</option><option value="Car" data-i18n="contact.form.service.7">Car Consultancy</option><option value="Furniture" data-i18n="contact.form.service.8">Furnishing & Furniture</option><option value="Property" data-i18n="contact.form.service.9">Property Brokerage</option><option value="Other" data-i18n="contact.form.service.10">Other</option></select></div></div>
+              <div class="form-group"><label for="message" data-i18n="contact.form.message">Your Message *</label><textarea id="message" name="message" rows="5" required data-i18n="contact.form.message.placeholder" placeholder="Tell us about your requirements..."></textarea></div>
+              <button type="submit" class="btn btn-primary btn-lg btn-submit" data-i18n="contact.form.submit">Send Message <i class="fas fa-paper-plane"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="index.html" class="navbar-brand" style="margin-bottom:14px;"><div class="brand-icon"><img src="logo.jpg" alt="High Q Services" /></div><div class="brand-text"><span class="brand-name" data-i18n="nav.brand">High Q Services</span><span class="brand-tagline" data-i18n="nav.tagline">Enhancing Life Beyond Limits</span></div></a><p data-i18n="footer.desc">Your trusted partner for catering, facility management, manpower, IT services, and more. Serving Bangalore since 2015.</p><div class="footer-social"><a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a><a href="https://wa.me/919900051336" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div></div>
+        <div><h4 data-i18n="footer.quicklinks">Quick Links</h4><ul class="footer-links"><li><a href="index.html" data-i18n="nav.home">Home</a></li><li><a href="about.html" data-i18n="nav.about">About Us</a></li><li><a href="services.html" data-i18n="nav.services">Our Services</a></li><li><a href="gallery.html" data-i18n="nav.gallery">Gallery</a></li><li><a href="contact.html" data-i18n="nav.contact">Contact</a></li></ul></div>
+        <div><h4 data-i18n="footer.services">Services</h4><ul class="footer-links"><li><a href="service-catering.html" data-i18n="services.1.title">Catering & Food Supply</a></li><li><a href="service-fruits.html" data-i18n="services.2.title">Fresh Fruits Supply</a></li><li><a href="service-facilities.html" data-i18n="services.3.title">Facilities Management</a></li><li><a href="service-manpower.html" data-i18n="services.4.title">Manpower Support</a></li><li><a href="service-crockery.html" data-i18n="services.5.title">Crockery & Miscellaneous</a></li><li><a href="service-it.html" data-i18n="services.6.title">IT Sales & Services</a></li><li><a href="service-car.html" data-i18n="services.7.title">Car Consultancy</a></li><li><a href="service-furniture.html" data-i18n="services.8.title">Furnishing & Furniture</a></li><li><a href="service-property.html" data-i18n="services.9.title">Property Brokerage</a></li></ul></div>
+        <div><h4 data-i18n="footer.contact">Contact Info</h4><ul class="footer-contact"><li><i class="fas fa-map-marker-alt"></i> <span data-i18n="footer.address">NO.54/8/13, 8th Cross, C.L.R Layout, R.T Nagar, Bangalore - 560032</span></li><li><i class="fas fa-phone"></i> <a href="tel:9900051336">+91 9900051336</a></li><li><i class="fas fa-envelope"></i> <a href="mailto:Highqservices02@gmail.com">Highqservices02@gmail.com</a></li><li><i class="fas fa-clock"></i> <span data-i18n="footer.hours">Mon - Sat: 9:00 AM - 7:00 PM</span></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span data-i18n="footer.copyright">&copy; 2026 High Q Services. All rights reserved.</span><span data-i18n-html="true" data-i18n="footer.credit">Designed with <i class="fas fa-heart" style="color:var(--color-accent);"></i> in Bangalore</span></div>
+    </div>
+  </footer>
+
+  <div class="whatsapp-float"><div class="tooltip" data-i18n="whatsapp.tooltip">Need help? Chat with us!</div><a href="https://wa.me/919900051336" target="_blank" class="whatsapp-btn" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <div id="chatbotContainer"></div>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>

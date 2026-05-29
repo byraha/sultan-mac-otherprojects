@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GKE + Microservices</title>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --border: #334155;
+    --text: #e2e8f0; --muted: #94a3b8;
+    --azure: #0078d4; --aws: #ff9900; --gcp: #4285f4;
+    --accent: #38bdf8; --green: #22c55e; --red: #ef4444;
+    --code-bg: #0b1120; --nav-bg: #0b1424;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .topnav { background: var(--nav-bg); border-bottom: 1px solid var(--border); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; position: sticky; top: 0; z-index: 10; flex-wrap: wrap; }
+  .topnav .logo { font-weight: 700; font-size: 1.1rem; background: linear-gradient(135deg, #38bdf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .topnav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; padding: 0.35rem 0.75rem; border-radius: 6px; transition: all 0.2s; }
+  .topnav a:hover, .topnav a.active { color: var(--text); background: rgba(56,189,248,0.1); }
+  .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+  header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  header h1 { font-size: 2rem; background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.4rem; }
+  header .subtitle { color: var(--muted); font-size: 1rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; color: var(--accent); }
+  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  @media (max-width: 900px) { .cards-3 { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); }
+  .card.azure { border-top: 3px solid var(--azure); } .card.aws { border-top: 3px solid var(--aws); } .card.gcp { border-top: 3px solid var(--gcp); }
+  .card h4 { font-size: 1rem; margin-bottom: 0.75rem; color: var(--text); }
+  .card p, .card li { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.4rem; }
+  .card ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  th, td { padding: 0.75rem 1rem; text-align: left; font-size: 0.86rem; }
+  th { background: #1a2744; font-weight: 700; border-bottom: 2px solid var(--border); }
+  td { border-bottom: 1px solid #1e293b; } tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
+  pre, code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.8rem; }
+  .code-block { background: var(--code-bg); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border); overflow-x: auto; margin: 0.75rem 0 1.5rem; }
+  .code-block pre { color: #cbd5e1; line-height: 1.65; }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge.yes { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge.no { background: rgba(239,68,68,0.15); color: var(--red); }
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+  .comparison-row { display: grid; grid-template-columns: 200px 1fr 1fr 1fr; gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 2rem; }
+  .comparison-row > div { background: var(--card); padding: 0.9rem 1rem; }
+  .comparison-row .rlabel { font-weight: 700; font-size: 0.88rem; background: #1a2744; }
+  @media (max-width: 900px) { .comparison-row { grid-template-columns: 1fr 1fr 1fr; } .comparison-row .rlabel { display: none; } }
+  @media (max-width: 600px) { .comparison-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="logo">Sultan's Cloud Shaping</a>
+  <a href="index.html">Portal</a>
+  <a href="wif.html">WIF</a>
+  <a href="deny-policies.html">Deny Policies</a>
+</nav>
+
+<div class="container">
+<header><h1>GKE + Microservices</h1><p class="subtitle">Managed Kubernetes & microservice deployment &mdash; Azure &middot; AWS &middot; GCP</p></header>
+<h2>Concept</h2><p style="color:var(--muted);margin-bottom:1.5rem;">Managed Kubernetes services let you deploy, scale, and manage containerized microservices without operating the control plane. All three clouds offer fully managed Kubernetes with varying degrees of integration.</p><div class="comparison-row"><div class="rlabel">Kubernetes Service</div><div>Azure Kubernetes Service (AKS)</div><div>Amazon EKS</div><div>Google Kubernetes Engine (GKE)</div></div><div class="comparison-row"><div class="rlabel">Control Plane</div><div>Free (Microsoft manages)</div><div>$0.10/hr per cluster (AWS manages)</div><div>Free (Google manages)</div></div><div class="comparison-row"><div class="rlabel">Node Auto-Repair</div><div>Yes (self-healing)</div><div>Yes (managed node groups)</div><div>Yes (auto-repair + auto-upgrade)</div></div><div class="comparison-row"><div class="rlabel">Auto-Scaling</div><div>Cluster Autoscaler + KEDA</div><div>Cluster Autoscaler + Karpenter</div><div>Cluster Autoscaler + Node Auto-Provisioning</div></div><div class="comparison-row"><div class="rlabel">Workload Identity</div><div>Azure AD Workload Identity</div><div>IAM Roles for Service Accounts (IRSA)</div><div>Workload Identity (GKE Metadata Server)</div></div><div class="comparison-row"><div class="rlabel">Service Mesh</div><div>Open Service Mesh / Istio addon</div><div>AWS App Mesh</div><div>Anthos Service Mesh (managed Istio)</div></div><div class="comparison-row"><div class="rlabel">Networking</div><div>Azure CNI / kubenet / Cilium</div><div>AWS VPC CNI / Cilium</div><div>GKE Dataplane V2 / Calico</div></div><h2>Create GKE Cluster + Deploy Microservice</h2><div class="code-block"><pre># Create GKE Autopilot cluster
+gcloud container clusters create-auto my-cluster \
+  --region=us-central1 \
+  --network=my-shared-vpc \
+  --subnetwork=my-subnet
+
+# Create deployment
+kubectl create deployment payments-api --image=us-central1-docker.pkg.dev/PROJECT/repo/payments:v1 --replicas=3
+
+# Expose as LoadBalancer
+kubectl expose deployment payments-api --port=80 --target-port=8080 --type=LoadBalancer
+
+# Create Ingress for path-based routing
+kubectl create ingress payments-ingress \
+  --class=gce \
+  --rule="api.example.com/payments=payments-api:80"</pre></div><div class="cards-3">
+  <div class="card azure"><h4>&#9675; Azure &mdash; AKS Microservices</h4><p><strong>Deploy via:</strong> Helm, Kustomize, or kubectl. AKS integrates with Azure Container Registry, Azure AD Pod Identity, and Azure Monitor for containers.</p><p><strong>CLI:</strong><br><code>az aks create -g prod-rg -n my-cluster --node-count 3 --enable-managed-identity</code></p></div>
+  <div class="card aws"><h4>&#9675; AWS &mdash; EKS Microservices</h4><p><strong>Deploy via:</strong> Helm, Kustomize, or kubectl. EKS integrates with ECR, IAM Roles for Service Accounts (IRSA), and AWS Load Balancer Controller.</p><p><strong>CLI:</strong><br><code>eksctl create cluster --name my-cluster --region us-east-1 --nodegroup-name workers --node-type t3.medium --nodes 3</code></p></div>
+  <div class="card gcp"><h4>&#9675; GCP &mdash; GKE Microservices</h4><p><strong>Deploy via:</strong> Helm, Kustomize, or kubectl. GKE integrates with Artifact Registry, Workload Identity, Cloud Load Balancing, and Cloud Monitoring.</p></div>
+</div>
+<footer>Built for learning &amp; reference &mdash; <span style="color:var(--accent);">Sultan's Cloud Shaping</span></footer></div></body></html>

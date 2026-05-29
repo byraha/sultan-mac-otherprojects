@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InspireIT Edu — Cloud & AI Career Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #06060f;
+      color: #fff;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #06060f; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(#00d4ff, #7b2ff7); border-radius: 3px; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ───────── ANIMATED BG ORB ───────── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      animation: orbFloat 20s infinite alternate ease-in-out;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(0,212,255,0.06); top: -10%; left: -10%; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(123,47,247,0.06); bottom: -10%; right: -10%; animation-delay: -7s; }
+    .orb-3 { width: 300px; height: 300px; background: rgba(255,107,107,0.04); top: 50%; left: 50%; animation-delay: -14s; }
+    @keyframes orbFloat {
+      0% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(60px,-40px) scale(1.1); }
+      66% { transform: translate(-30px,60px) scale(0.9); }
+      100% { transform: translate(40px,30px) scale(1.05); }
+    }
+
+    /* ───────── NAV ───────── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      padding: 18px 0;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    nav.scrolled {
+      background: rgba(6,6,15,0.92);
+      backdrop-filter: blur(20px);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    nav .container { display: flex; align-items: center; justify-content: space-between; }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 22px; font-weight: 800;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      position: relative;
+    }
+    .logo i { -webkit-text-fill-color: #00d4ff; font-size: 26px; }
+    .logo-glow {
+      position: absolute; width: 40px; height: 40px;
+      background: rgba(0,212,255,0.15); border-radius: 50%;
+      filter: blur(16px); left: 0; animation: glowPulse 2s infinite;
+    }
+    @keyframes glowPulse { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.55);
+      transition: color 0.3s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: #00d4ff; transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 0 8px rgba(0,212,255,0.4);
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      padding: 10px 24px; border-radius: 50px; font-weight: 600; font-size: 13px;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7); border: none; color: #fff;
+      cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .nav-cta::before {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: conic-gradient(transparent, rgba(255,255,255,0.1), transparent 30%);
+      animation: rotateBorder 3s linear infinite;
+    }
+    @keyframes rotateBorder { 100% { transform: rotate(360deg); } }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,255,0.3); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+    .hamburger span { width: 26px; height: 2px; background: #fff; transition: 0.3s; border-radius: 2px; }
+
+    /* ───────── NAV DROPDOWN ───────── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a i { font-size: 10px; margin-left: 4px; transition: transform 0.3s; }
+    .nav-dropdown:hover > a i { transform: rotate(180deg); }
+    .nav-dropdown-menu {
+      position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      background: rgba(10,10,29,0.96); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;
+      padding: 10px; min-width: 230px;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+      margin-top: 16px;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu {
+      opacity: 1; visibility: visible; pointer-events: auto; margin-top: 8px;
+    }
+    .nav-dropdown-menu a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 10px;
+      font-size: 13px !important; color: rgba(255,255,255,0.5) !important;
+      transition: all 0.2s;
+    }
+    .nav-dropdown-menu a:hover { background: rgba(0,212,255,0.04); color: #fff !important; }
+    .nav-dropdown-menu a i { width: 20px; text-align: center; font-size: 14px; }
+    .nav-dropdown-menu a::after { display: none !important; }
+
+    /* ───────── HERO ───────── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center;
+      overflow: hidden;
+    }
+    .hero-video {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0;
+    }
+    .hero-particles {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1; overflow: hidden;
+    }
+    .hero-particles span {
+      position: absolute;
+      width: 4px; height: 4px;
+      background: rgba(0,212,255,0.4);
+      border-radius: 50%;
+      animation: particleFloat 15s infinite linear;
+    }
+    .hero-particles span:nth-child(1) { left: 10%; top: 20%; animation-duration: 12s; animation-delay: 0s; }
+    .hero-particles span:nth-child(2) { left: 25%; top: 60%; animation-duration: 18s; animation-delay: 2s; width: 6px; height: 6px; }
+    .hero-particles span:nth-child(3) { left: 45%; top: 30%; animation-duration: 14s; animation-delay: 4s; }
+    .hero-particles span:nth-child(4) { left: 65%; top: 70%; animation-duration: 20s; animation-delay: 1s; width: 3px; height: 3px; }
+    .hero-particles span:nth-child(5) { left: 80%; top: 40%; animation-duration: 16s; animation-delay: 3s; width: 5px; height: 5px; }
+    .hero-particles span:nth-child(6) { left: 50%; top: 85%; animation-duration: 13s; animation-delay: 5s; }
+    .hero-particles span:nth-child(7) { left: 90%; top: 15%; animation-duration: 17s; animation-delay: 2s; }
+    .hero-particles span:nth-child(8) { left: 15%; top: 90%; animation-duration: 15s; animation-delay: 6s; width: 6px; height: 6px; }
+    .hero-particles span:nth-child(9) { left: 35%; top: 10%; animation-duration: 19s; animation-delay: 0s; }
+    .hero-particles span:nth-child(10) { left: 70%; top: 50%; animation-duration: 11s; animation-delay: 4s; }
+    @keyframes particleFloat {
+      0% { transform: translateY(0) scale(1); opacity: 0.4; }
+      25% { transform: translateY(-30px) translateX(20px) scale(1.2); opacity: 0.8; }
+      50% { transform: translateY(-60px) translateX(-10px) scale(0.8); opacity: 0.3; }
+      75% { transform: translateY(-30px) translateX(30px) scale(1.1); opacity: 0.6; }
+      100% { transform: translateY(0) scale(1); opacity: 0.4; }
+    }
+
+    .hero-vignette {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(6,6,15,0.9) 100%);
+      z-index: 1;
+    }
+    .hero-gradient-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(6,6,15,0.8) 0%, rgba(6,6,15,0.35) 50%, rgba(6,6,15,0.8) 100%);
+      z-index: 1;
+    }
+    .hero-content { position: relative; z-index: 2; padding: 140px 0 80px; width: 100%; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 20px; border-radius: 50px;
+      background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.15);
+      font-size: 12px; font-weight: 600; color: #00d4ff; margin-bottom: 28px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      animation: fadeInUp 0.8s ease;
+    }
+    .hero h1 {
+      font-size: clamp(38px, 6.5vw, 72px); font-weight: 900; line-height: 1.06;
+      margin-bottom: 20px; max-width: 900px;
+      animation: fadeInUp 0.8s ease 0.1s both;
+    }
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7, #ff6b6b);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: gradShift 4s ease-in-out infinite;
+    }
+    @keyframes gradShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    .hero-typing {
+      font-size: clamp(16px, 2vw, 20px); color: rgba(255,255,255,0.6);
+      max-width: 680px; margin-bottom: 36px; line-height: 1.8;
+      min-height: 60px;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+    .hero-typing .cursor { display: inline-block; width: 2px; height: 1.2em; background: #00d4ff; margin-left: 4px; animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.3s both; }
+    .btn-primary {
+      padding: 16px 36px; border-radius: 50px; font-weight: 700; font-size: 16px;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7); border: none; color: #fff;
+      cursor: pointer; transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 10px;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::after {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 50px rgba(0,212,255,0.3); }
+    .btn-primary:hover::after { opacity: 1; }
+    .btn-outline {
+      padding: 16px 36px; border-radius: 50px; font-weight: 600; font-size: 16px;
+      background: transparent; border: 2px solid rgba(255,255,255,0.12); color: #fff;
+      cursor: pointer; transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn-outline:hover { border-color: #00d4ff; background: rgba(0,212,255,0.05); transform: translateY(-3px); }
+
+    .hero-stats {
+      display: flex; gap: 56px; margin-top: 64px;
+      padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+    .hero-stat { position: relative; }
+    .hero-stat h3 { font-size: 42px; font-weight: 800; line-height: 1; }
+    .hero-stat h3 span { background: linear-gradient(135deg, #00d4ff, #7b2ff7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat .counter-suffix { font-size: 24px; background: linear-gradient(135deg, #00d4ff, #7b2ff7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat p { font-size: 12px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+
+    /* ───────── SECTION COMMON ───────── */
+    section { padding: 110px 0; position: relative; z-index: 1; }
+    .section-label {
+      display: inline-block; padding: 6px 18px; border-radius: 50px;
+      background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.12);
+      font-size: 11px; font-weight: 600; color: #00d4ff; margin-bottom: 16px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .section-title {
+      font-size: clamp(30px, 3.8vw, 46px); font-weight: 800;
+      margin-bottom: 16px; line-height: 1.12;
+    }
+    .section-sub {
+      font-size: 17px; color: rgba(255,255,255,0.5); max-width: 640px;
+      margin-bottom: 56px; line-height: 1.8;
+    }
+    .text-center { text-align: center; }
+    .text-center .section-sub { margin-left: auto; margin-right: auto; }
+
+    /* ───────── EXEC SUMMARY ───────── */
+    #exec-summary { background: linear-gradient(180deg, #06060f 0%, #0a0a1d 100%); }
+    .exec-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+    .exec-visual {
+      border-radius: 20px; overflow: hidden; position: relative;
+      background: linear-gradient(135deg, rgba(0,212,255,0.02), rgba(123,47,247,0.02));
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .exec-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .exec-visual-glow {
+      position: absolute; top: -20%; right: -20%; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(0,212,255,0.1), transparent);
+      border-radius: 50%; filter: blur(40px); animation: orbFloat 8s infinite alternate;
+    }
+    .exec-text h2 { font-size: 34px; font-weight: 800; margin-bottom: 20px; }
+    .exec-text h2 span { background: linear-gradient(135deg, #00d4ff, #7b2ff7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .exec-text p { color: rgba(255,255,255,0.55); margin-bottom: 16px; line-height: 1.8; font-size: 15px; }
+    .exec-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+    .exec-detail {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.7);
+      padding: 10px 14px; border-radius: 10px;
+      background: rgba(0,212,255,0.03); border: 1px solid rgba(0,212,255,0.06);
+      transition: all 0.3s;
+    }
+    .exec-detail:hover { background: rgba(0,212,255,0.06); transform: translateX(4px); }
+    .exec-detail i { color: #00d4ff; font-size: 14px; }
+
+    /* ───────── VISION MISSION ───────── */
+    #vision-mission {
+      background: linear-gradient(180deg, #0a0a1d 0%, #06060f 100%);
+      position: relative;
+    }
+    .vm-header {
+      text-align: center; margin-bottom: 48px;
+    }
+    .vm-header h2 {
+      font-size: clamp(32px, 4vw, 48px); font-weight: 900;
+      margin-bottom: 16px;
+    }
+    .vm-header h2 span { background: linear-gradient(135deg, #00d4ff, #7b2ff7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .vm-header p { font-size: 16px; color: rgba(255,255,255,0.5); max-width: 700px; margin: 0 auto; line-height: 1.8; }
+    .vm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .vm-card {
+      border-radius: 20px; padding: 44px;
+      position: relative; overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .vm-card:hover { transform: translateY(-4px); }
+    .vm-card.challenge {
+      background: rgba(255,107,107,0.03); border: 1px solid rgba(255,107,107,0.1);
+    }
+    .vm-card.solution {
+      background: rgba(0,212,255,0.03); border: 1px solid rgba(0,212,255,0.1);
+    }
+    .vm-card-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+      margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .vm-card.challenge .vm-card-label { color: #ff6b6b; }
+    .vm-card.solution .vm-card-label { color: #00d4ff; }
+    .vm-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+    .vm-card ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .vm-card ul li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.55);
+    }
+    .vm-card ul li i {
+      margin-top: 2px; flex-shrink: 0;
+    }
+    .vm-card.challenge ul li i { color: #ff6b6b; }
+    .vm-card.solution ul li i { color: #00d4ff; }
+    .vm-stat-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      margin-top: 24px; padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .vm-stat { text-align: center; }
+    .vm-stat .num {
+      font-size: 28px; font-weight: 800;
+    }
+    .vm-stat.challenge-stat .num { color: #ff6b6b; }
+    .vm-stat.solution-stat .num { color: #00d4ff; }
+    .vm-stat p { font-size: 11px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+    .vm-divider {
+      width: 1px; background: rgba(255,255,255,0.06);
+      align-self: stretch; margin: 0;
+    }
+    .vm-cta {
+      text-align: center; margin-top: 48px;
+    }
+    .vm-cta p { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+
+    /* ───────── MARKET GAP ───────── */
+    #market-gap { background: linear-gradient(180deg, #06060f 0%, #0a0a1d 100%); }
+    .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .gap-box { padding: 32px; border-radius: 20px; transition: transform 0.3s; }
+    .gap-box:hover { transform: translateY(-4px); }
+    .gap-box.problems { background: rgba(255,107,107,0.03); border: 1px solid rgba(255,107,107,0.08); }
+    .gap-box.demands { background: rgba(0,212,255,0.03); border: 1px solid rgba(0,212,255,0.08); }
+    .gap-box h4 { font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .gap-box ul { list-style: none; }
+    .gap-box ul li {
+      padding: 12px 16px; margin-bottom: 8px;
+      border-radius: 10px; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; gap: 12px;
+      transition: transform 0.2s;
+    }
+    .gap-box ul li:hover { transform: translateX(6px); }
+    .gap-box.problems ul li { background: rgba(255,107,107,0.04); color: rgba(255,255,255,0.65); }
+    .gap-box.problems ul li i { color: #ff6b6b; width: 18px; }
+    .gap-box.demands ul li { background: rgba(0,212,255,0.04); color: rgba(255,255,255,0.65); }
+    .gap-box.demands ul li i { color: #00d4ff; width: 18px; }
+
+    /* ───────── AUDIENCE ───────── */
+    #audience { background: linear-gradient(180deg, #0a0a1d 0%, #06060f 100%); }
+    .audience-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+    .audience-card {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px; padding: 32px 24px; text-align: center;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+      position: relative; overflow: hidden;
+    }
+    .audience-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+      transform: scaleX(0); transition: transform 0.4s;
+    }
+    .audience-card:hover { transform: translateY(-8px); border-color: rgba(0,212,255,0.15); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .audience-card:hover::after { transform: scaleX(1); }
+    .audience-card i { font-size: 34px; margin-bottom: 16px; display: block; }
+    .audience-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .audience-card p { font-size: 13px; color: rgba(255,255,255,0.45); }
+
+    /* ───────── COURSES ───────── */
+    #courses { background: linear-gradient(180deg, #06060f 0%, #0a0a1d 100%); }
+    .courses-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px;
+    }
+    .course-card {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px; padding: 32px;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+      position: relative; overflow: hidden;
+      transform-style: preserve-3d;
+      perspective: 800px;
+    }
+    .course-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .course-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      border-color: rgba(0,212,255,0.15);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    }
+    .course-card:hover::before { opacity: 1; }
+    .course-card .shine {
+      position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.02), transparent);
+      transition: left 0.6s;
+    }
+    .course-card:hover .shine { left: 100%; }
+    .course-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 18px;
+      transition: transform 0.3s;
+    }
+    .course-card:hover .course-icon { transform: scale(1.1) rotate(-5deg); }
+    .course-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .course-card .course-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 16px; }
+    .course-card .course-topics { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 16px; line-height: 1.6; list-style: none; }
+    .course-card .course-topics li { padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+    .course-card .course-topics li::before { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #00d4ff; font-size: 10px; }
+    .course-meta { display: flex; gap: 16px; font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; }
+    .course-meta i { color: #00d4ff; margin-right: 6px; }
+    .course-link { display: block; text-decoration: none; color: inherit; cursor: pointer; }
+    .course-link:hover { text-decoration: none; color: inherit; }
+    .course-vtu {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
+      background: rgba(123,47,247,0.08); color: #b388ff; margin-bottom: 12px;
+    }
+    .course-build {
+      margin-top: 16px; padding: 14px; border-radius: 12px;
+      background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,0.06);
+    }
+    .course-build-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: #00d4ff; margin-bottom: 4px;
+    }
+    .course-build p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; margin: 0; }
+    .card-week {
+      font-size: 12px; color: rgba(255,255,255,0.35);
+      display: inline-block; margin-right: 12px;
+    }
+    .card-week i { color: #7b2ff7; margin-right: 4px; }
+
+    /* ───────── METHODOLOGY ───────── */
+    #methodology { background: linear-gradient(180deg, #0a0a1d 0%, #06060f 100%); }
+    .method-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+    .method-card {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px; padding: 28px 20px; text-align: center;
+      transition: all 0.3s;
+    }
+    .method-card:hover { background: rgba(0,212,255,0.03); border-color: rgba(0,212,255,0.1); transform: translateY(-4px); }
+    .method-card i { font-size: 30px; margin-bottom: 14px; display: block; }
+    .method-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .method-card p { font-size: 13px; color: rgba(255,255,255,0.45); }
+
+    /* ───────── DELIVERY ───────── */
+    #delivery { background: linear-gradient(180deg, #06060f 0%, #0a0a1d 100%); }
+    .delivery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .delivery-card {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px; padding: 40px 36px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .delivery-card:hover { transform: translateY(-6px); border-color: rgba(0,212,255,0.15); }
+    .delivery-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+    .delivery-card ul { list-style: none; }
+    .delivery-card ul li {
+      padding: 10px 0; font-size: 14px; color: rgba(255,255,255,0.55);
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      transition: transform 0.2s;
+    }
+    .delivery-card ul li:last-child { border-bottom: none; }
+    .delivery-card ul li:hover { transform: translateX(6px); color: rgba(255,255,255,0.8); }
+    .delivery-card ul li i { color: #00d4ff; font-size: 12px; width: 20px; }
+
+    /* ───────── ROADMAP ───────── */
+    #roadmap { background: linear-gradient(180deg, #0a0a1d 0%, #06060f 100%); }
+    .phase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .phase-card {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px; padding: 36px 32px; position: relative;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .phase-card:hover { transform: translateY(-6px); border-color: rgba(0,212,255,0.12); }
+    .phase-number {
+      position: absolute; top: -8px; right: 20px;
+      font-size: 80px; font-weight: 900;
+      background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(123,47,247,0.06));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+    .phase-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .phase-card .phase-period { font-size: 13px; color: #00d4ff; font-weight: 600; margin-bottom: 16px; display: block; }
+    .phase-card ul { list-style: none; }
+    .phase-card ul li { font-size: 13px; color: rgba(255,255,255,0.5); padding: 6px 0; display: flex; align-items: center; gap: 8px; }
+    .phase-card ul li i { color: #00d4ff; font-size: 10px; }
+
+    /* ───────── ADVANTAGE ───────── */
+    #advantage { background: linear-gradient(180deg, #06060f 0%, #0a0a1d 100%); }
+    .adv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .adv-card {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px; padding: 28px 24px; text-align: center;
+      transition: all 0.3s; position: relative;
+    }
+    .adv-card:hover { background: rgba(0,212,255,0.03); border-color: rgba(0,212,255,0.1); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+    .adv-card i { font-size: 32px; margin-bottom: 14px; display: block; }
+    .adv-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .adv-card p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+    /* ───────── REVENUE ───────── */
+    #revenue { background: linear-gradient(180deg, #0a0a1d 0%, #06060f 100%); }
+    .rev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .rev-card {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px; padding: 28px;
+      transition: all 0.3s;
+    }
+    .rev-card:hover { border-color: rgba(0,212,255,0.12); transform: translateY(-4px); }
+    .rev-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .rev-card ul { list-style: none; }
+    .rev-card ul li { font-size: 13px; color: rgba(255,255,255,0.45); padding: 6px 0; display: flex; align-items: center; gap: 8px; }
+    .rev-card ul li i { color: #00d4ff; font-size: 10px; }
+
+    /* ───────── PARTNERSHIP ───────── */
+    #partnership {
+      background: linear-gradient(135deg, rgba(0,212,255,0.02), rgba(123,47,247,0.02));
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .partner-box {
+      max-width: 800px; margin: 0 auto; text-align: center;
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(0,212,255,0.08);
+      border-radius: 24px; padding: 52px 40px;
+      position: relative; overflow: hidden;
+    }
+    .partner-box::before {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(0,212,255,0.02), transparent 30%);
+      animation: rotateBorder 8s linear infinite;
+    }
+    .partner-box > * { position: relative; z-index: 1; }
+    .partner-box h2 { font-size: 34px; font-weight: 800; margin-bottom: 16px; }
+    .partner-box h2 span { background: linear-gradient(135deg, #00d4ff, #7b2ff7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .partner-box > p { font-size: 16px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 28px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .partner-areas { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; max-width: 640px; margin: 0 auto 32px; }
+    .partner-areas span {
+      padding: 12px 16px; border-radius: 10px;
+      background: rgba(0,212,255,0.03); border: 1px solid rgba(0,212,255,0.06);
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6);
+      transition: all 0.3s;
+    }
+    .partner-areas span:hover { background: rgba(0,212,255,0.06); border-color: rgba(0,212,255,0.15); transform: translateY(-2px); }
+    .partner-areas span i { color: #00d4ff; margin-right: 6px; font-size: 12px; }
+
+    /* ───────── LONG-TERM VISION ───────── */
+    #vision-long { background: #06060f; }
+    .lt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; }
+    .lt-card {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 14px; padding: 28px 20px; text-align: center;
+      transition: all 0.3s;
+    }
+    .lt-card:hover { transform: translateY(-4px); border-color: rgba(0,212,255,0.1); }
+    .lt-card i { font-size: 30px; margin-bottom: 12px; display: block; }
+    .lt-card h4 { font-size: 18px; font-weight: 700; }
+    .lt-card p { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+
+    /* ───────── CONTACT ───────── */
+    #contact { background: linear-gradient(180deg, #06060f 0%, #0a0a1d 100%); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+    .contact-info h3 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+    .contact-info > p { color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 32px; font-size: 15px; }
+    .contact-detail { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .contact-detail .cd-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      color: #00d4ff; font-size: 16px; flex-shrink: 0;
+    }
+    .contact-detail h5 { font-size: 14px; font-weight: 600; }
+    .contact-detail p { font-size: 13px; color: rgba(255,255,255,0.45); margin: 0; }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .contact-form input, .contact-form textarea, .contact-form select {
+      padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.02); color: #fff; font-family: inherit; font-size: 14px;
+      transition: all 0.3s;
+    }
+    .contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus {
+      outline: none; border-color: #00d4ff;
+      box-shadow: 0 0 0 3px rgba(0,212,255,0.05);
+    }
+    .contact-form textarea { min-height: 110px; resize: vertical; }
+    .contact-form select option { background: #06060f; color: #fff; }
+    .contact-form .btn-primary { width: 100%; justify-content: center; border: none; }
+
+    /* ───────── FOOTER ───────── */
+    footer {
+      padding: 60px 0 30px;
+      border-top: 1px solid rgba(255,255,255,0.03);
+      background: #04040a;
+    }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer-brand .logo { font-size: 20px; margin-bottom: 16px; display: inline-flex; }
+    .footer-brand p { font-size: 14px; color: rgba(255,255,255,0.35); line-height: 1.7; max-width: 340px; }
+    .footer-social { display: flex; gap: 12px; margin-top: 20px; }
+    .footer-social a {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.35); transition: all 0.3s; font-size: 14px;
+    }
+    .footer-social a:hover { background: rgba(0,212,255,0.08); color: #00d4ff; border-color: rgba(0,212,255,0.2); transform: translateY(-2px); }
+    .footer-col h5 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px; color: rgba(255,255,255,0.5); }
+    .footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.3); margin-bottom: 10px; transition: all 0.2s; }
+    .footer-col a:hover { color: #00d4ff; transform: translateX(4px); }
+    .footer-bottom {
+      padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.03);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: rgba(255,255,255,0.2);
+    }
+
+    /* ───────── RESPONSIVE ───────── */
+    @media (max-width: 968px) {
+      .exec-grid, .gap-grid, .contact-grid, .delivery-grid, .vm-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .phase-grid { grid-template-columns: 1fr; }
+      .partner-areas { grid-template-columns: 1fr 1fr; }
+    }
+    .scroll-top {
+      position: fixed; bottom: 30px; right: 30px; z-index: 999;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7); color: #fff;
+      border: none; border-radius: 50px; padding: 12px 24px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 20px rgba(0,212,255,0.3);
+      opacity: 0; visibility: hidden; transform: translateY(20px);
+      transition: all 0.3s;
+    }
+    .scroll-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .scroll-top:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,212,255,0.4); }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(6,6,15,0.98); padding: 90px 32px 32px;
+        gap: 8px; backdrop-filter: blur(20px);
+        justify-content: center; align-items: center;
+        overflow-y: auto;
+      }
+      .nav-links.open a { font-size: 20px; }
+      .nav-links.open .nav-cta { font-size: 16px; padding: 14px 32px; }
+      .nav-dropdown { width: 100%; text-align: center; }
+      .nav-dropdown > a { pointer-events: none; cursor: default; }
+      .nav-dropdown > a i { display: none; }
+      .nav-dropdown-menu {
+        position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto;
+        background: transparent; border: none; padding: 4px 0 0; margin: 0;
+        min-width: auto; display: flex; flex-direction: column; gap: 2px;
+      }
+      .nav-dropdown-menu a { justify-content: center; font-size: 15px !important; padding: 6px 14px; color: rgba(255,255,255,0.4) !important; }
+      .nav-dropdown-menu a:hover { background: transparent; color: #fff !important; }
+      .nav-links.open .nav-dropdown { margin: -8px 0; }
+      section { padding: 60px 0; }
+      .courses-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; justify-content: space-between; }
+      .hero-stat h3 { font-size: 32px; }
+      .exec-details { grid-template-columns: 1fr; }
+      .partner-areas { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .phase-number { font-size: 56px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── ORBS ─── -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- ─── NAV ─── -->
+  <nav id="navbar">
+    <div class="container">
+      <div class="logo">
+        <div class="logo-glow"></div>
+        <i class="fas fa-graduation-cap"></i> InspireIT Edu
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="#exec-summary">About</a>
+        <div class="nav-dropdown">
+          <a>Courses <i class="fas fa-chevron-down"></i></a>
+          <div class="nav-dropdown-menu">
+            <a href="courses/cloud-computing.html" target="_blank"><i class="fas fa-cloud"></i> Cloud Computing</a>
+            <a href="courses/devops-automation.html" target="_blank"><i class="fas fa-arrow-rotate-right"></i> DevOps & Automation</a>
+            <a href="courses/generative-ai.html" target="_blank"><i class="fas fa-brain"></i> Generative AI</a>
+            <a href="courses/machine-learning.html" target="_blank"><i class="fas fa-chart-line"></i> Machine Learning</a>
+            <a href="courses/cyber-security.html" target="_blank"><i class="fas fa-shield-halved"></i> Cyber Security</a>
+            <a href="courses/web-development.html" target="_blank"><i class="fas fa-globe"></i> Web Development</a>
+          </div>
+        </div>
+        <a href="#methodology">Methodology</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#partnership">Partner</a>
+        <a href="#contact" class="nav-cta">Get in Touch</a>
+      </div>
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="https://cdn.pixabay.com/video/2022/09/20/131993-751915314_large.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-particles">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="hero-vignette"></div>
+    <div class="hero-gradient-overlay"></div>
+    <div class="hero-content container">
+      <div class="hero-badge">
+        <i class="fas fa-rocket"></i> Internships · Real Skills · Job Ready — Enroll Now
+      </div>
+      <h1>From Classroom to<br /><span class="gradient-text">Career Ready</span></h1>
+      <div class="hero-typing">
+        <span id="typedText"></span><span class="cursor"></span>
+      </div>
+      <div class="hero-actions">
+        <a href="#courses" class="btn-primary">
+          <i class="fas fa-graduation-cap"></i> Explore Programs
+        </a>
+        <a href="#contact" class="btn-outline">
+          <i class="fas fa-briefcase"></i> Get Internship Ready
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <h3><span class="counter" data-target="6">0</span><span class="counter-suffix">+</span></h3>
+          <p>Industry-Relevant Modules</p>
+        </div>
+        <div class="hero-stat">
+          <h3><span class="counter" data-target="100">0</span><span class="counter-suffix">%</span></h3>
+          <p>Hands-On Practical Training</p>
+        </div>
+        <div class="hero-stat">
+          <h3><span class="counter" data-target="6">0</span><span class="counter-suffix">-8 Wk</span></h3>
+          <p>Internship Accelerator</p>
+        </div>
+        <div class="hero-stat">
+          <h3><span class="counter" data-target="30">0</span><span class="counter-suffix">+</span></h3>
+          <p>Real-World Projects</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── EXECUTIVE SUMMARY ─── -->
+  <section id="exec-summary">
+    <div class="container">
+      <div class="exec-grid">
+        <div class="exec-visual">
+          <div class="exec-visual-glow"></div>
+          <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&q=80" alt="College Students" loading="lazy" />
+        </div>
+        <div class="exec-text">
+          <div class="section-label">Executive Summary</div>
+          <h2>Your Shortcut from <span>College to Dream Internship & Job</span></h2>
+          <p>Stop relying on a outdated syllabus. Get real, hands-on Cloud & AI skills that top employers are hiring for — with live projects, industry mentors, and a clear path to your first internship.</p>
+          <p>Master <strong>Cloud Computing, Microsoft Azure, AWS, AI, DevOps, Cybersecurity</strong> and <strong>Career Readiness</strong> — on real enterprise tools and live cloud environments, not simulators.</p>
+          <div class="exec-details">
+            <div class="exec-detail"><i class="fas fa-check-circle"></i> Internship-First Training Approach</div>
+            <div class="exec-detail"><i class="fas fa-check-circle"></i> Industry-Ready Practical Skills</div>
+            <div class="exec-detail"><i class="fas fa-check-circle"></i> Live Enterprise Cloud Environments</div>
+            <div class="exec-detail"><i class="fas fa-check-circle"></i> Resume & Interview Preparation</div>
+            <div class="exec-detail"><i class="fas fa-check-circle"></i> Real-World Project Portfolio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MISSION — PAIN → SOLUTION ─── -->
+  <section id="vision-mission">
+    <div class="container">
+      <div class="vm-header">
+        <div class="section-label text-center">Our Mission</div>
+        <h2>Bridge the <span>College-to-Career Gap</span></h2>
+        <p>Every year, thousands of engineering graduates leave college with degrees but without the practical skills companies are hiring for. Our mission is to close that gap — with real training, real tools, and real outcomes.</p>
+      </div>
+      <div class="vm-grid">
+        <div class="vm-card challenge">
+          <div class="vm-card-label"><i class="fas fa-exclamation-triangle"></i> The Challenge — What's Broken</div>
+          <ul>
+            <li><i class="fas fa-times-circle"></i> <strong>Outdated syllabus</strong> — College curriculum lags 2-3 years behind industry; students learn theory that's no longer relevant</li>
+            <li><i class="fas fa-times-circle"></i> <strong>Zero practical cloud exposure</strong> — Most colleges have no cloud labs; students graduate without ever touching Azure or AWS</li>
+            <li><i class="fas fa-times-circle"></i> <strong>Empty resumes, no portfolio</strong> — No real projects means no interview calls; 83% of graduates go unplaced or underemployed</li>
+            <li><i class="fas fa-times-circle"></i> <strong>No internship pathway</strong> — Students don't know what skills to build or how to land that first internship; companies won't hire without experience</li>
+          </ul>
+          <div class="vm-stat-row">
+            <div class="vm-stat challenge-stat"><div class="num">83%</div><p>Graduates Unplaced</p></div>
+            <div class="vm-stat challenge-stat"><div class="num">71.5%</div><p>Qualified but Not Hired</p></div>
+            <div class="vm-stat challenge-stat"><div class="num">2-3 Yrs</div><p>Syllabus Lag</p></div>
+          </div>
+        </div>
+        <div class="vm-card solution">
+          <div class="vm-card-label"><i class="fas fa-bullseye"></i> Our Solution — How We Fix It</div>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> <strong>Industry-aligned curriculum</strong> — Every module is built around what employers actually ask in interviews and job descriptions — Cloud, AI, DevOps, Cybersecurity</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Hands-on live cloud labs</strong> — Not simulators. Every student gets real Azure & AWS environments to build, deploy, and troubleshoot just like on the job</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Portfolio-worthy real projects</strong> — Students leave with 6+ production-grade projects on their resume — cloud infra, CI/CD pipelines, AI deployments — proof of skill, not just a certificate</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Internship-first career track</strong> — From day one, we train for the goal: land a paid internship. Resume building, mock interviews, industry connect — built into every program</li>
+          </ul>
+          <div class="vm-stat-row">
+            <div class="vm-stat solution-stat"><div class="num">100%</div><p>Hands-On Practical</p></div>
+            <div class="vm-stat solution-stat"><div class="num">6-8 Wk</div><p>Internship Accelerator</p></div>
+            <div class="vm-stat solution-stat"><div class="num">6+</div><p>Real Projects Built</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="vm-cta">
+        <p>This isn't another coaching center. This is a career launchpad built by an industry professional who has been in the enterprise cloud trenches — not a teacher who's never deployed to production.</p>
+        <a href="#courses" class="btn-primary"><i class="fas fa-arrow-right"></i> See How We Build Job-Ready Skills</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MARKET GAP ─── -->
+  <section id="market-gap">
+    <div class="container">
+      <div class="section-label text-center">Market Opportunity</div>
+      <h2 class="section-title text-center">The Industry Gap We Solve</h2>
+      <p class="section-sub text-center">83% of engineering graduates are unplaced. Why? College syllabus alone won't get you an internship or job. We bridge the gap with real, hands-on industry training.</p>
+      <div class="gap-grid">
+        <div class="gap-box problems">
+          <h4><i class="fas fa-exclamation-triangle" style="color:#ff6b6b;"></i> Current Problems in Education</h4>
+          <ul>
+            <li><i class="fas fa-times-circle"></i> Lack of practical cloud experience</li>
+            <li><i class="fas fa-times-circle"></i> No hands-on infrastructure knowledge</li>
+            <li><i class="fas fa-times-circle"></i> Zero AI tool exposure</li>
+            <li><i class="fas fa-times-circle"></i> No real-world deployment understanding</li>
+            <li><i class="fas fa-times-circle"></i> Missing interview preparation</li>
+            <li><i class="fas fa-times-circle"></i> No industry project experience</li>
+            <li><i class="fas fa-times-circle"></i> Outdated theory-focused curriculums</li>
+          </ul>
+        </div>
+        <div class="gap-box demands">
+          <h4><i class="fas fa-chart-line" style="color:#00d4ff;"></i> What Industry Demands</h4>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> Cloud Computing skills (Azure & AWS)</li>
+            <li><i class="fas fa-check-circle"></i> Artificial Intelligence & ML proficiency</li>
+            <li><i class="fas fa-check-circle"></i> Cybersecurity fundamentals</li>
+            <li><i class="fas fa-check-circle"></i> DevOps & CI/CD pipeline knowledge</li>
+            <li><i class="fas fa-check-circle"></i> Infrastructure Engineering</li>
+            <li><i class="fas fa-check-circle"></i> Certification readiness</li>
+            <li><i class="fas fa-check-circle"></i> Practical, project-based experience</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TARGET AUDIENCE ─── -->
+  <section id="audience">
+    <div class="container text-center">
+      <div class="section-label">Who We Serve</div>
+      <h2 class="section-title">Target Audience</h2>
+      <p class="section-sub">Built specifically for college students hungry for real skills, paid internships, and job-ready confidence — not just another certificate.</p>
+    </div>
+    <div class="container">
+      <div class="audience-grid">
+        <div class="audience-card"><i class="fas fa-user-graduate" style="color:#00d4ff;"></i><h4>Engineering Students</h4><p>B.E. / B.Tech students who want practical skills that land paid internships & jobs</p></div>
+        <div class="audience-card"><i class="fas fa-laptop-code" style="color:#7b2ff7;"></i><h4>BCA / B.Sc. Students</h4><p>CS/IT graduates who need real industry exposure beyond the textbook</p></div>
+        <div class="audience-card"><i class="fas fa-building-columns" style="color:#ff6b6b;"></i><h4>Diploma Students</h4><p>Polytechnic students looking to build job-ready IT infrastructure skills</p></div>
+        <div class="audience-card"><i class="fas fa-briefcase" style="color:#00c853;"></i><h4>Working Professionals</h4><p>IT pros & career switchers wanting hands-up, not just theory-up</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── COURSES ─── -->
+  <section id="courses">
+    <div class="container text-center">
+      <div class="section-label">Hands-On Courses</div>
+      <h2 class="section-title">Learn Skills That Get You <span>Internship Ready</span></h2>
+      <p class="section-sub">Short, practical courses designed for college students. Each course runs 4–6 weeks — no fluff, just real skills you can use in an interview from day one.</p>
+    </div>
+    <div class="container">
+      <div class="courses-grid">
+
+        <a href="courses/cloud-computing.html" target="_blank" class="course-card course-link"><div class="shine"></div>
+          <div class="course-icon" style="background:rgba(0,120,212,0.06);color:#0078d4;"><i class="fas fa-cloud"></i></div>
+          <h3>Cloud Computing</h3>
+          <p class="course-desc">Learn to build and manage cloud systems on AWS & Azure — the #1 skill companies look for. You'll set up servers, storage, networking, and security just like a real cloud engineer.</p>
+          <div class="course-meta"><span><i class="far fa-clock"></i> 6 Weeks</span><span><i class="fas fa-layer-group"></i> No experience needed</span></div>
+        </a>
+
+        <a href="courses/devops-automation.html" target="_blank" class="course-card course-link"><div class="shine"></div>
+          <div class="course-icon" style="background:rgba(123,47,247,0.06);color:#7b2ff7;"><i class="fas fa-arrow-rotate-right"></i></div>
+          <h3>DevOps & Automation</h3>
+          <p class="course-desc">Automate everything — from code to deployment. Learn Git, Docker, CI/CD pipelines, and Kubernetes. This is what every software team uses to ship apps faster.</p>
+          <div class="course-meta"><span><i class="far fa-clock"></i> 5 Weeks</span><span><i class="fas fa-layer-group"></i> No experience needed</span></div>
+        </a>
+
+        <a href="courses/generative-ai.html" target="_blank" class="course-card course-link"><div class="shine"></div>
+          <div class="course-icon" style="background:rgba(0,200,83,0.06);color:#00c853;"><i class="fas fa-brain"></i></div>
+          <h3>Generative AI</h3>
+          <p class="course-desc">Build smart apps with ChatGPT and AI. Learn prompt engineering, build chatbots that can answer from your documents, and deploy AI apps on the cloud. The most exciting new field in tech.</p>
+          <div class="course-meta"><span><i class="far fa-clock"></i> 4 Weeks</span><span><i class="fas fa-layer-group"></i> No experience needed</span></div>
+        </a>
+
+        <a href="courses/machine-learning.html" target="_blank" class="course-card course-link"><div class="shine"></div>
+          <div class="course-icon" style="background:rgba(255,153,0,0.06);color:#ff9900;"><i class="fas fa-chart-line"></i></div>
+          <h3>Machine Learning</h3>
+          <p class="course-desc">Go beyond Jupyter notebooks. Build, deploy, and monitor real ML models on the cloud. Learn how ML is actually used in production — and build a portfolio that stands out.</p>
+          <div class="course-meta"><span><i class="far fa-clock"></i> 5 Weeks</span><span><i class="fas fa-layer-group"></i> Some coding helpful</span></div>
+        </a>
+
+        <a href="courses/cyber-security.html" target="_blank" class="course-card course-link"><div class="shine"></div>
+          <div class="course-icon" style="background:rgba(255,107,107,0.06);color:#ff6b6b;"><i class="fas fa-shield-halved"></i></div>
+          <h3>Cyber Security</h3>
+          <p class="course-desc">Protect systems from real cyber threats. Learn cloud security, how to set up security monitoring, respond to attacks, and understand compliance — skills every company desperately needs.</p>
+          <div class="course-meta"><span><i class="far fa-clock"></i> 5 Weeks</span><span><i class="fas fa-layer-group"></i> No experience needed</span></div>
+        </a>
+
+        <a href="courses/web-development.html" target="_blank" class="course-card course-link"><div class="shine"></div>
+          <div class="course-icon" style="background:rgba(0,212,255,0.06);color:#00d4ff;"><i class="fas fa-globe"></i></div>
+          <h3>Web Development</h3>
+          <p class="course-desc">Build modern websites and apps from scratch. Master databases, REST APIs, and cloud deployment. Every company needs web developers — start building your portfolio today.</p>
+          <div class="course-meta"><span><i class="far fa-clock"></i> 4 Weeks</span><span><i class="fas fa-layer-group"></i> No experience needed</span></div>
+        </a>
+
+      </div>
+      <div class="text-center" style="margin-top:40px;">
+        <p style="color:rgba(255,255,255,0.4); font-size:14px;">Click any course above to see the full curriculum, weekly schedule, and what you'll build.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── METHODOLOGY ─── -->
+  <section id="methodology">
+    <div class="container text-center">
+      <div class="section-label">How We Train</div>
+      <h2 class="section-title">Training Methodology</h2>
+      <p class="section-sub">Heavy focus on practical implementation — every concept is applied in real cloud environments, not slides.</p>
+    </div>
+    <div class="container">
+      <div class="method-grid">
+        <div class="method-card"><i class="fas fa-chalkboard-user" style="color:#00d4ff;"></i><h4>Live Demonstrations</h4><p>Instructor-led real-time walkthroughs of every concept</p></div>
+        <div class="method-card"><i class="fas fa-cloud" style="color:#7b2ff7;"></i><h4>Cloud Sandbox Labs</h4><p>Practice on live Azure and AWS environments</p></div>
+        <div class="method-card"><i class="fas fa-diagram-project" style="color:#ff6b6b;"></i><h4>Guided Projects</h4><p>Build real-world infrastructure step by step</p></div>
+        <div class="method-card"><i class="fas fa-wrench" style="color:#00c853;"></i><h4>Real Troubleshooting</h4><p>Debug live issues just like in production jobs</p></div>
+        <div class="method-card"><i class="fas fa-pen-ruler" style="color:#ffb347;"></i><h4>Hands-on Assignments</h4><p>Weekly practical tasks to reinforce learning</p></div>
+        <div class="method-card"><i class="fas fa-people-group" style="color:#00d4ff;"></i><h4>Interactive Workshops</h4><p>Collaborative problem-solving sessions</p></div>
+        <div class="method-card"><i class="fas fa-video" style="color:#7b2ff7;"></i><h4>Recorded Sessions</h4><p>Access all sessions anytime via LMS</p></div>
+        <div class="method-card"><i class="fas fa-scroll" style="color:#ff6b6b;"></i><h4>Certification Prep</h4><p>Exam-ready guidance for AZ-900 & AWS CCP</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DELIVERY MODEL ─── -->
+  <section id="delivery">
+    <div class="container">
+      <div class="section-label text-center">Delivery Model</div>
+      <h2 class="section-title text-center">Phase 1 — Hybrid Training Model</h2>
+      <p class="section-sub text-center">Flexibility and scalability through a blended approach of offline classroom sessions and online learning.</p>
+    </div>
+    <div class="container">
+      <div class="delivery-grid">
+        <div class="delivery-card" style="border-color:rgba(0,212,255,0.08);">
+          <h3><i class="fas fa-building" style="color:#00d4ff;"></i> Offline Classroom</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Instructor-led classes at our Bangalore centre</li>
+            <li><i class="fas fa-check"></i> Hands-on lab sessions with live cloud environments</li>
+            <li><i class="fas fa-check"></i> Interactive workshops & group problem-solving</li>
+            <li><i class="fas fa-check"></i> College campus seminars & workshops</li>
+            <li><i class="fas fa-check"></i> Direct mentorship & doubt clearing</li>
+          </ul>
+        </div>
+        <div class="delivery-card" style="border-color:rgba(123,47,247,0.08);">
+          <h3><i class="fas fa-globe" style="color:#7b2ff7;"></i> Online Learning</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Live online classes via video conferencing</li>
+            <li><i class="fas fa-check"></i> Recorded session access (LMS)</li>
+            <li><i class="fas fa-check"></i> Digital assignments & auto-graded quizzes</li>
+            <li><i class="fas fa-check"></i> Remote 1:1 mentoring sessions</li>
+            <li><i class="fas fa-check"></i> 24/7 LMS access with learning materials</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ROADMAP ─── -->
+  <section id="roadmap">
+    <div class="container text-center">
+      <div class="section-label">Execution Roadmap</div>
+      <h2 class="section-title">Phase-Wise Execution Plan</h2>
+      <p class="section-sub">A structured 12-month journey from foundation to scale, designed for sustainable growth and maximum impact.</p>
+    </div>
+    <div class="container">
+      <div class="phase-grid">
+        <div class="phase-card"><div class="phase-number">01</div>
+          <h3>Foundation</h3><span class="phase-period">Months 0–3</span>
+          <ul>
+            <li><i class="fas fa-check"></i> Finalize branding & identity</li>
+            <li><i class="fas fa-check"></i> Build complete curriculum & content</li>
+            <li><i class="fas fa-check"></i> Setup classroom & infrastructure</li>
+            <li><i class="fas fa-check"></i> Launch social media presence</li>
+            <li><i class="fas fa-check"></i> Conduct free introductory workshops</li>
+            <li><i class="fas fa-check"></i> Enroll first student batch</li>
+          </ul>
+        </div>
+        <div class="phase-card"><div class="phase-number">02</div>
+          <h3>Validation & Expansion</h3><span class="phase-period">Months 3–6</span>
+          <ul>
+            <li><i class="fas fa-check"></i> Train initial batches with quality focus</li>
+            <li><i class="fas fa-check"></i> Collect testimonials & case studies</li>
+            <li><i class="fas fa-check"></i> Build college relationships</li>
+            <li><i class="fas fa-check"></i> Expand course catalog</li>
+            <li><i class="fas fa-check"></i> Launch recorded content library</li>
+          </ul>
+        </div>
+        <div class="phase-card"><div class="phase-number">03</div>
+          <h3>Scaling</h3><span class="phase-period">Months 6–12</span>
+          <ul>
+            <li><i class="fas fa-check"></i> Add advanced & specialized courses</li>
+            <li><i class="fas fa-check"></i> Expand online presence nationally</li>
+            <li><i class="fas fa-check"></i> Build placement & recruitment partnerships</li>
+            <li><i class="fas fa-check"></i> Launch internship programs</li>
+            <li><i class="fas fa-check"></i> Scale college collaborations across Karnataka</li>
+            <li><i class="fas fa-check"></i> Build regional brand recognition</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ADVANTAGE ─── -->
+  <section id="advantage">
+    <div class="container text-center">
+      <div class="section-label">Why We Stand Out</div>
+      <h2 class="section-title">Competitive Advantage</h2>
+      <p class="section-sub">Unlike your college lab or typical coaching centers, we deliver enterprise-grade training that makes you actually hireable — with real projects, live cloud, and industry mentors.</p>
+    </div>
+    <div class="container">
+      <div class="adv-grid">
+        <div class="adv-card"><i class="fas fa-microchip" style="color:#00d4ff;"></i><h4>Industry-Oriented Learning</h4><p>Curriculum designed by professionals who have built real enterprise systems — not academicians without industry exposure</p></div>
+        <div class="adv-card"><i class="fas fa-laptop-file" style="color:#7b2ff7;"></i><h4>Real Enterprise Exposure</h4><p>Learn on production-grade scenarios — troubleshooting, deployment, monitoring, and security that mirror real jobs</p></div>
+        <div class="adv-card"><i class="fas fa-cloud-arrow-up" style="color:#ff6b6b;"></i><h4>Cloud Lab Environments</h4><p>Every student gets access to live Azure and AWS sandboxes for hands-on practice — not simulators</p></div>
+        <div class="adv-card"><i class="fas fa-robot" style="color:#00c853;"></i><h4>Modern AI Integration</h4><p>AI woven into the curriculum — LLMs, Copilot, and automation tools in real workflows</p></div>
+        <div class="adv-card"><i class="fas fa-bug" style="color:#ffb347;"></i><h4>Hands-on Troubleshooting</h4><p>Debug real infrastructure issues — broken deployments, configuration errors, performance problems</p></div>
+        <div class="adv-card"><i class="fas fa-arrow-trend-up" style="color:#00d4ff;"></i><h4>Updated & Market-Aligned</h4><p>Curriculum evolves with industry trends — updated quarterly based on hiring patterns and technology shifts</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── REVENUE ─── -->
+  <section id="revenue">
+    <div class="container text-center">
+      <div class="section-label">Business Model</div>
+      <h2 class="section-title">Revenue Streams</h2>
+      <p class="section-sub">A diversified multi-channel revenue model ensuring sustainability and growth.</p>
+    </div>
+    <div class="container">
+      <div class="rev-grid">
+        <div class="rev-card"><h4><i class="fas fa-user-graduate" style="color:#00d4ff;"></i> Student Training</h4><ul><li><i class="fas fa-check"></i> Full certification courses</li><li><i class="fas fa-check"></i> Weekend batches</li><li><i class="fas fa-check"></i> Crash courses</li><li><i class="fas fa-check"></i> Internship programs</li></ul></div>
+        <div class="rev-card"><h4><i class="fas fa-handshake" style="color:#7b2ff7;"></i> College Partnerships</h4><ul><li><i class="fas fa-check"></i> Campus workshops & seminars</li><li><i class="fas fa-check"></i> Faculty training programs</li><li><i class="fas fa-check"></i> Certification bootcamps</li><li><i class="fas fa-check"></i> Industry-aligned lab delivery</li></ul></div>
+        <div class="rev-card"><h4><i class="fas fa-building" style="color:#ff6b6b;"></i> Corporate Training</h4><ul><li><i class="fas fa-check"></i> Cloud fundamentals programs</li><li><i class="fas fa-check"></i> AI productivity workshops</li><li><i class="fas fa-check"></i> Infrastructure upskilling</li><li><i class="fas fa-check"></i> Security awareness training</li></ul></div>
+        <div class="rev-card"><h4><i class="fas fa-globe" style="color:#00c853;"></i> Future Expansion</h4><ul><li><i class="fas fa-check"></i> Online courses & LMS platform</li><li><i class="fas fa-check"></i> Recorded training library</li><li><i class="fas fa-check"></i> Subscription-based learning</li><li><i class="fas fa-check"></i> Remote mentorship programs</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PARTNERSHIP ─── -->
+  <section id="partnership">
+    <div class="container">
+      <div class="partner-box">
+        <i class="fas fa-handshake" style="font-size:48px;color:#00d4ff;margin-bottom:20px;display:block;"></i>
+        <h2>Investment & <span>Partnership</span> Opportunity</h2>
+        <p>Join us in building a sustainable, scalable education business with strong long-term growth potential in India's fastest-growing tech education market.</p>
+        <div class="partner-areas">
+          <span><i class="fas fa-coins"></i> Financial Investment</span>
+          <span><i class="fas fa-building"></i> Infrastructure Support</span>
+          <span><i class="fas fa-users"></i> Strategic Partnerships</span>
+          <span><i class="fas fa-network-wired"></i> College Network Introductions</span>
+          <span><i class="fas fa-bullhorn"></i> Marketing Collaboration</span>
+          <span><i class="fas fa-microchip"></i> Technology Sponsorships</span>
+        </div>
+        <p style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:0;">Together, we can transform technical education and build the next generation of cloud & AI professionals.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LONG-TERM VISION ─── -->
+  <section id="vision-long">
+    <div class="container text-center">
+      <div class="section-label">Long-Term Vision</div>
+      <h2 class="section-title">Where We're Going</h2>
+      <p class="section-sub">A recognized Cloud & AI Academy transforming technical education across India.</p>
+      <div class="lt-grid">
+        <div class="lt-card"><i class="fas fa-users" style="color:#00d4ff;"></i><h4>500+</h4><p>Students trained annually</p></div>
+        <div class="lt-card"><i class="fas fa-building-columns" style="color:#7b2ff7;"></i><h4>50+</h4><p>College partnerships</p></div>
+        <div class="lt-card"><i class="fas fa-globe" style="color:#ff6b6b;"></i><h4>National</h4><p>Online programs across India</p></div>
+        <div class="lt-card"><i class="fas fa-briefcase" style="color:#00c853;"></i><h4>Placement</h4><p>Network & internship ecosystem</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ─── -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-label text-center">Get in Touch</div>
+      <h2 class="section-title text-center">Ready to Land Your Dream Internship?</h2>
+      <p class="section-sub text-center" style="margin-bottom:48px;">Students: Start your journey to job-ready skills. Colleges: Partner with us. Just reach out.</p>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Contact InspireIT Edu</h3>
+          <p>Whether you're a student hungry for real skills & internships, a college wanting better placement outcomes, or a professional seeking cloud/AI upskilling — let's talk.</p>
+          <div class="contact-detail"><div class="cd-icon"><i class="fas fa-user-tie"></i></div><div><h5>InspireIT Edu</h5><p>Cloud & AI Career Academy</p></div></div>
+          <div class="contact-detail"><div class="cd-icon"><i class="fas fa-map-marker-alt"></i></div><div><h5>Address</h5><p>Building No 103, 3rd Floor, Above ICICI Bank, AECS Layout, Sanjay Nagar, Bangalore-560094, Karnataka</p></div></div>
+          <div class="contact-detail"><div class="cd-icon"><i class="fas fa-envelope"></i></div><div><h5>Email</h5><p>info@inspireit.in</p></div></div>
+          <div class="contact-detail"><div class="cd-icon"><i class="fas fa-phone"></i></div><div><h5>Phone</h5><p>+91 96208 90999</p></div></div>
+          <div class="contact-detail"><div class="cd-icon"><i class="fas fa-calendar"></i></div><div><h5>Free Seminar</h5><p>Book a free introductory workshop for your college</p></div></div>
+        </div>
+        <form class="contact-form" onsubmit="handleForm(event)">
+          <input type="text" placeholder="Your Full Name" required />
+          <input type="email" placeholder="Email Address" required />
+          <select required>
+            <option value="">I am a...</option>
+            <option>Student — Need Internship Skills</option>
+            <option>College / University Representative</option>
+            <option>Working Professional — Upskilling</option>
+            <option>Investor / Partner</option>
+            <option>Corporate Client</option>
+          </select>
+          <input type="text" placeholder="Subject" />
+          <textarea placeholder="Tell us about your requirements, partnership interest, or questions..." required></textarea>
+          <button type="submit" class="btn-primary" style="justify-content:center;"><i class="fas fa-paper-plane"></i> Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="font-size:18px;"><i class="fas fa-graduation-cap"></i> InspireIT Edu</div>
+          <p>Cloud & AI Career Academy — turning college students into internship-ready, job-ready professionals with real enterprise skills that actually get you hired.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="footer-col"><h5>Quick Links</h5><a href="#exec-summary">About</a><a href="#courses">Programs</a><a href="#methodology">Methodology</a><a href="#roadmap">Roadmap</a><a href="#partnership">Partner With Us</a><a href="#contact">Contact</a></div>
+        <div class="footer-col"><h5>Programs</h5><a href="courses/cloud-computing.html" target="_blank">Cloud Computing</a><a href="courses/devops-automation.html" target="_blank">DevOps & Automation</a><a href="courses/generative-ai.html" target="_blank">Generative AI</a><a href="courses/machine-learning.html" target="_blank">Machine Learning</a><a href="courses/cyber-security.html" target="_blank">Cyber Security</a><a href="courses/web-development.html" target="_blank">Web Development</a></div>
+        <div class="footer-col"><h5>Contact</h5><a href="#">Sanjay Nagar, Bangalore</a><a href="#">info@inspireit.in</a><a href="#">+91 96208 90999</a><a href="#contact">Book a Free Seminar</a></div>
+      </div>
+      <div class="footer-bottom"><span>&copy; 2026 InspireIT Edu. All rights reserved.</span><span>From Classroom to Career Ready — InspireIT Edu</span></div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i> InspireIT Edu</button>
+
+  <script>
+    // ─── Scroll Nav & Scroll-Top ───
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+      const st = document.querySelector('.scroll-top');
+      if (st) st.classList.toggle('visible', window.scrollY > 500);
+    });
+
+    // ─── Mobile Menu ───
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+    document.querySelectorAll('.nav-links a, .nav-dropdown-menu a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+    });
+
+    // ─── Typing Effect ───
+    const phrases = [
+      'Stop just studying — start building real skills that land you paid internships and top IT jobs.',
+      'Bridge the gap between college syllabus and what the industry actually demands from you.',
+      'Get job-ready with hands-on Cloud, AI, DevOps & Cybersecurity training on live enterprise environments.',
+      'Your dream internship is waiting. We give you the real-world skills to grab it.'
+    ];
+    let phraseIdx = 0, charIdx = 0, isDeleting = false;
+    const el = document.getElementById('typedText');
+    function typeEffect() {
+      const current = phrases[phraseIdx];
+      if (!isDeleting) {
+        el.textContent = current.substring(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === current.length) { setTimeout(() => { isDeleting = true; }, 2000); setTimeout(typeEffect, 50); return; }
+        setTimeout(typeEffect, 25);
+      } else {
+        el.textContent = current.substring(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) { isDeleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; setTimeout(typeEffect, 300); return; }
+        setTimeout(typeEffect, 15);
+      }
+    }
+    setTimeout(typeEffect, 800);
+
+    // ─── Animated Counters ───
+    const counters = document.querySelectorAll('.counter');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.target);
+          let current = 0;
+          const step = Math.max(1, Math.ceil(target / 40));
+          const interval = setInterval(() => {
+            current += step;
+            if (current >= target) { el.textContent = target; clearInterval(interval); }
+            else el.textContent = current;
+          }, 40);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObserver.observe(c));
+
+    // ─── Scroll Reveal ───
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.exec-grid, .gap-grid, .vm-card, .audience-card, .course-card, .method-card, .delivery-card, .phase-card, .adv-card, .rev-card, .partner-box, .lt-card, .contact-grid').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      revealObserver.observe(el);
+    });
+
+    // ─── Card Tilt Effect ───
+    document.querySelectorAll('.course-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+        card.style.transform = `translateY(-8px) scale(1.01) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+    // ─── Contact Form ───
+    function handleForm(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! We will connect within 24 hours.';
+        btn.style.background = 'linear-gradient(135deg, #00c853, #00e676)';
+        e.target.reset();
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+systemctl --user start hardwin-studio.service
+
+Or to start it directly (without systemd):
+
+cd ~/hardwin_interview/hardwin-software-gcp && venv/bin/gunicorn -w 2 -b 0.0.0.0:8080 --timeout 600 app:app --access-logfile /tmp/gunicorn_access.log --error-logfile /tmp/gunicorn_error.log
+
+Step 1 — Organization:
+Field 	Value
+Company Name 	SimpleLinks
+Organization ID 	692154983500
+Billing Account ID 	0193EC-3316A5-C3C1AE
+Primary Region 	us-central1
+Admin Email 	admins@simplelinks.co
+Project Prefix 	prj
+
+Step 2 — Hierarchy:
+
+    Environments: check Development and Production
+    Bootstrap Project: prj-shared-services
+
+Step 3 — IAM:
+
+    Org Admin Group: gcp-admins@simplelinks.co
+    Billing Admin Group: gcp-billing@simplelinks.co
+    Terraform SA: terraform-sa (default)
+    Roles: keep projectCreator and folderAdmin checked
+
+Step 4 — Networking:
+
+    Architecture: Standalone VPC
+    VPC Name: vpc-main
+    Subnet: sb-main-us-central1 / 10.0.0.0/24
+
+Step 5 — Security:
+
+    Compliance: CIS GCP Benchmarks
+    Log Retention: 365 days
+    CMEK: toggle ON
+    Keep all 8 default org policies checked
+
+Step 6 — Services & Budget:
+
+    Compute: Cloud Run + Cloud Functions
+    Data: BigQuery + Cloud Storage + Pub/Sub
+    Budget slider: set to $1,000
+
+Then click Generate Landing Zone → download the ZIP.

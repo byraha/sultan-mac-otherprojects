@@ -1,0 +1,2 @@
+ yt-dlp --newline -f "bestvideo+bestaudio/best" -o "/home/sultantalib/opencode/sultan-youtube/youtube-videos/%(playlist_index)s - %(title)s.%(ext)s" "https://www.youtube.com/watch?v=LGvutTGw5zc&list=PLi9EhCY4z99XR9Me1e4LZTF-YsnklmEsa"
+

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workload Identity Federation (WIF) — Azure · AWS · GCP | Sultan's Cloud Shaping</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --border: #334155;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --azure: #0078d4;
+    --aws: #ff9900;
+    --gcp: #4285f4;
+    --accent: #38bdf8;
+    --green: #22c55e;
+    --code-bg: #0b1120;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .topnav {
+    background: #0b1424; border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem;
+    position: sticky; top: 0; z-index: 10; flex-wrap: wrap;
+  }
+  .topnav .logo {
+    font-weight: 700; font-size: 1.1rem;
+    background: linear-gradient(135deg, #38bdf8, #c084fc);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    text-decoration: none;
+  }
+  .topnav a {
+    color: var(--muted); text-decoration: none; font-size: 0.9rem;
+    padding: 0.35rem 0.75rem; border-radius: 6px; transition: all 0.2s;
+  }
+  .topnav a:hover, .topnav a.active { color: var(--text); background: rgba(56,189,248,0.1); }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  header {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+  header .subtitle { color: var(--muted); font-size: 1.1rem; }
+
+  .tabs {
+    display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;
+  }
+  .tab {
+    padding: 0.6rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--card); color: var(--muted); cursor: pointer; font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+  .tab:hover { border-color: var(--accent); color: var(--text); }
+  .tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  h2 {
+    font-size: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 0.5rem;
+  }
+  h2 .num {
+    background: var(--accent); color: var(--bg); border-radius: 50%;
+    width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+  }
+
+  .cards-3 {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (max-width: 900px) { .cards-3 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--card); border-radius: 12px; padding: 1.5rem;
+    border: 1px solid var(--border); transition: border-color 0.2s;
+  }
+  .card.azure { border-top: 3px solid var(--azure); }
+  .card.aws { border-top: 3px solid var(--aws); }
+  .card.gcp { border-top: 3px solid var(--gcp); }
+
+  .card h3 { font-size: 1.1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .card .icon {
+    font-size: 1.4rem; width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-weight: 700;
+  }
+  .card.azure .icon { background: rgba(0,120,212,0.15); color: var(--azure); }
+  .card.aws .icon { background: rgba(255,153,0,0.15); color: var(--aws); }
+  .card.gcp .icon { background: rgba(66,133,244,0.15); color: var(--gcp); }
+
+  .card p, .card li { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .card ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  .card .highlight { color: var(--green); font-weight: 600; }
+
+  .concept-map {
+    display: grid; grid-template-columns: 180px 1fr 1fr 1fr;
+    gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+  .concept-map > div { background: var(--card); padding: 1rem; }
+  .concept-map .label { font-weight: 700; font-size: 0.9rem; background: #1a2744; }
+
+  @media (max-width: 900px) {
+    .concept-map { grid-template-columns: 1fr 1fr 1fr; }
+    .concept-map .label { display: none; }
+  }
+  @media (max-width: 600px) {
+    .concept-map { grid-template-columns: 1fr; }
+  }
+
+  .yaml-block {
+    background: var(--code-bg); border-radius: 10px; padding: 1.25rem;
+    border: 1px solid var(--border); overflow-x: auto; margin: 0.5rem 0 1.5rem;
+  }
+  .yaml-block pre { color: #cbd5e1; font-size: 0.82rem; line-height: 1.7; font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+  .yaml-block .kw { color: #7dd3fc; }
+  .yaml-block .str { color: #a5d6a7; }
+  .yaml-block .cmt { color: #64748b; }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 1rem 0 2rem;
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  }
+  th, td { padding: 0.75rem 1rem; text-align: left; font-size: 0.88rem; }
+  th { background: #1a2744; font-weight: 700; border-bottom: 2px solid var(--border); }
+  td { border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { color: var(--accent); font-weight: 600; white-space: nowrap; }
+
+  .step-header {
+    display: flex; align-items: center; gap: 0.75rem; margin: 2rem 0 0.75rem;
+  }
+  .step-header .step-num {
+    background: var(--accent); color: var(--bg); border-radius: 8px;
+    padding: 0.3rem 0.8rem; font-weight: 700; font-size: 0.85rem;
+  }
+  .step-header span { font-weight: 600; font-size: 1.05rem; }
+
+  .scroll-hint {
+    text-align: right; color: var(--muted); font-size: 0.8rem;
+    margin-top: -0.5rem; margin-bottom: 0.5rem;
+  }
+
+  footer {
+    text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem;
+    border-top: 1px solid var(--border); margin-top: 3rem;
+  }
+  footer span { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="logo">Sultan's Cloud Shaping</a>
+  <a href="index.html">Portal</a>
+  <a href="wif.html" class="active">WIF (OIDC)</a>
+  <a href="deny-policies.html">Deny Policies</a>
+</nav>
+
+<div class="container">
+
+<header>
+  <h1>Workload Identity Federation</h1>
+  <p class="subtitle">Azure · AWS · GCP — Side-by-Side Reference</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('concept')">Concept Overview</div>
+  <div class="tab" onclick="switchTab('steps')">Step-by-Step Setup</div>
+  <div class="tab" onclick="switchTab('yaml')">GitHub Actions YAML</div>
+  <div class="tab" onclick="switchTab('mapping')">Concept Mapping</div>
+</div>
+
+<!-- =================== CONCEPT OVERVIEW =================== -->
+<div id="concept" class="section active">
+
+  <h2><span class="num">1</span> Core Concept</h2>
+  <div class="cards-3">
+    <div class="card azure">
+      <h3><span class="icon">Az</span> Azure</h3>
+      <p><strong>Identity unit:</strong> Service Principal (App Registration)</p>
+      <p><strong>Auth mechanism:</strong> Federated Credentials (OIDC)</p>
+      <p><strong>Trust anchor:</strong> App Registration trusts GitHub issuer</p>
+      <p><strong>Permissions:</strong> RBAC on resource/subscription</p>
+      <p class="highlight">No secrets stored — token exchanged for Entra token</p>
+    </div>
+    <div class="card aws">
+      <h3><span class="icon">AW</span> AWS</h3>
+      <p><strong>Identity unit:</strong> IAM Role</p>
+      <p><strong>Auth mechanism:</strong> OIDC Identity Provider</p>
+      <p><strong>Trust anchor:</strong> IAM OIDC Provider trusts GitHub issuer</p>
+      <p><strong>Permissions:</strong> IAM Role + Trust Policy</p>
+      <p class="highlight">No secrets stored — token exchanged for AWS creds</p>
+    </div>
+    <div class="card gcp">
+      <h3><span class="icon">GC</span> GCP</h3>
+      <p><strong>Identity unit:</strong> Service Account</p>
+      <p><strong>Auth mechanism:</strong> Workload Identity Pools</p>
+      <p><strong>Trust anchor:</strong> WIF Pool Provider trusts GitHub issuer</p>
+      <p><strong>Permissions:</strong> IAM roles bound to Service Account</p>
+      <p class="highlight">No secrets stored — token exchanged for GCP creds</p>
+    </div>
+  </div>
+
+  <h2><span class="num">2</span> Architecture Flow</h2>
+  <p style="color:var(--muted);margin-bottom:1rem;">Same flow across all three — only the names differ:</p>
+  <ol style="color:var(--muted);padding-left:1.5rem;margin-bottom:1.5rem;">
+    <li>GitHub Actions obtains an OIDC token from <code>token.actions.githubusercontent.com</code></li>
+    <li>GitHub sends the token to the cloud provider's token exchange endpoint</li>
+    <li>Cloud verifies the token signature, issuer, audience, and any <strong>attribute conditions</strong></li>
+    <li>Cloud exchanges the GitHub OIDC token for a <strong>short-lived cloud credential</strong></li>
+    <li>Workflow uses that credential to call cloud APIs — no long-lived secrets anywhere</li>
+  </ol>
+
+  <h2><span class="num">3</span> Issuer & Audience (All 3)</h2>
+  <table>
+    <tr><th></th><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>Issuer URL</td>
+      <td><code>https://token.actions.githubusercontent.com</code></td>
+      <td><code>https://token.actions.githubusercontent.com</code></td>
+      <td><code>https://token.actions.githubusercontent.com</code></td>
+    </tr>
+    <tr>
+      <td>Audience</td>
+      <td><code>api://AzureADTokenExchange</code></td>
+      <td><code>sts.amazonaws.com</code></td>
+      <td>(default from issuer)</td>
+    </tr>
+  </table>
+
+</div>
+
+<!-- =================== STEP-BY-STEP =================== -->
+<div id="steps" class="section">
+
+  <!-- Step 1 -->
+  <div class="step-header"><span class="step-num">Step 1</span><span>Create the Identity Trust (Issuer)</span></div>
+  <table>
+    <tr><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>
+        <strong>Console:</strong> Entra ID → App Registrations → New<br>
+        <strong>Action:</strong> Create App Registration<br>
+        Note the <em>Application (Client) ID</em>
+      </td>
+      <td>
+        <strong>Console:</strong> IAM → Identity Providers → Add Provider<br>
+        <strong>Action:</strong> Add OpenID Connect Provider<br>
+        Provider URL: <code>token.actions.githubusercontent.com</code><br>
+        Audience: <code>sts.amazonaws.com</code>
+      </td>
+      <td>
+        <strong>Console:</strong> IAM & Admin → Workload Identity Pools<br>
+        <strong>Action:</strong> Create Pool (e.g. <code>github-pool</code>)<br>
+        → Add OIDC Provider (e.g. <code>github-provider</code>)<br>
+        Issuer: <code>https://token.actions.githubusercontent.com</code>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Step 2 -->
+  <div class="step-header"><span class="step-num">Step 2</span><span>Create the Identity (Service Account Equivalent)</span></div>
+  <table>
+    <tr><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>
+        <strong>Done.</strong> The App Registration IS your identity<br>
+        <em>Service Principal = Managed Identity without a cert</em>
+      </td>
+      <td>
+        <strong>Console:</strong> IAM → Roles → Create Role<br>
+        <strong>Trusted entity:</strong> Web Identity<br>
+        Pick the OIDC provider from Step 1<br>
+        Set audience to <code>sts.amazonaws.com</code>
+      </td>
+      <td>
+        <strong>Console:</strong> IAM & Admin → Service Accounts<br>
+        <strong>Action:</strong> + Create Service Account<br>
+        Name: <code>github-actions-sa</code>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Step 3 -->
+  <div class="step-header"><span class="step-num">Step 3</span><span>Configure Federation (Link GitHub to Cloud)</span></div>
+  <table>
+    <tr><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>
+        <strong>Console:</strong> App Registration → Certificates & Secrets → Federated Credentials<br>
+        <strong>+ Add Credential</strong><br>
+        Entity type: Branch / PR / Environment<br>
+        GitHub org: <code>inspireit-dt</code><br>
+        Repo: <code>my-repo</code><br>
+        <em>(Optional: add claim condition for specific ref)</em>
+      </td>
+      <td>
+        <strong>Console:</strong> IAM → Roles → pick role → Trust Relationships<br>
+        <strong>Edit Trust Policy (JSON):</strong><br>
+        <code>"Condition": {"StringLike": {"token.actions.githubusercontent.com:sub": "repo:inspireit-dt/*:*"}}</code>
+      </td>
+      <td>
+        <strong>Console:</strong> WIF Pool → Grant Access<br>
+        <strong>Attribute name:</strong> <code>attribute.repository_owner</code><br>
+        <strong>Attribute value:</strong> <code>inspireit-dt</code><br>
+        <strong>Role:</strong> Workload Identity User<br>
+        <em>(See attribute mapping in WIF provider config)</em>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Step 4 -->
+  <div class="step-header"><span class="step-num">Step 4</span><span>Grant Permissions (RBAC / IAM Roles)</span></div>
+  <table>
+    <tr><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>
+        <strong>Console:</strong> Subscription → Access Control (IAM) → Add Role Assignment<br>
+        <strong>Assign to:</strong> Service Principal from Step 1<br>
+        <strong>Role:</strong> Contributor / Storage Blob Data Contributor / etc.
+      </td>
+      <td>
+        <strong>Console:</strong> IAM → Roles → pick role → Attach Policy<br>
+        <strong>Attach:</strong> Managed or custom policy<br>
+        <strong>Example:</strong> S3FullAccess, LambdaFullAccess, etc.
+      </td>
+      <td>
+        <strong>Console:</strong> IAM & Admin → Service Accounts → pick SA<br>
+        <strong>+ Grant Access</strong><br>
+        <strong>Role examples:</strong> Storage Admin, GKE Developer, Cloud Run Admin
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+<!-- =================== YAML =================== -->
+<div id="yaml" class="section">
+
+  <h2><span class="num">&#9432;</span> GitHub Actions Workflow Snippets</h2>
+  <p style="color:var(--muted);margin-bottom:1rem;">All three require: <code>permissions: { id-token: write, contents: read }</code></p>
+
+  <div class="cards-3">
+    <div class="card azure">
+      <h3><span class="icon">Az</span> Azure</h3>
+      <p style="margin:0 0 0.5rem;"><strong>Action:</strong> <code>azure/login@v2</code></p>
+    </div>
+    <div class="card aws">
+      <h3><span class="icon">AW</span> AWS</h3>
+      <p style="margin:0 0 0.5rem;"><strong>Action:</strong> <code>aws-actions/configure-aws-credentials@v4</code></p>
+    </div>
+    <div class="card gcp">
+      <h3><span class="icon">GC</span> GCP</h3>
+      <p style="margin:0 0 0.5rem;"><strong>Action:</strong> <code>google-github-actions/auth@v2</code></p>
+    </div>
+  </div>
+
+  <div class="cards-3">
+    <div class="yaml-block">
+      <pre><span class="cmt"># .github/workflows/deploy.yml</span>
+<span class="kw">name:</span> Deploy to Azure
+<span class="kw">on:</span>
+  <span class="kw">push:</span>
+    <span class="kw">branches:</span> [main]
+
+<span class="kw">jobs:</span>
+  <span class="kw">deploy:</span>
+    <span class="kw">runs-on:</span> ubuntu-latest
+    <span class="kw">permissions:</span>
+      <span class="kw">id-token:</span> write
+      <span class="kw">contents:</span> read
+    <span class="kw">steps:</span>
+    - <span class="kw">uses:</span> actions/checkout@v4
+    - <span class="kw">uses:</span> azure/login@v2
+      <span class="kw">with:</span>
+        <span class="kw">client-id:</span> ${{ vars.AZURE_CLIENT_ID }}
+        <span class="kw">tenant-id:</span> ${{ vars.AZURE_TENANT_ID }}
+        <span class="kw">subscription-id:</span> ${{ vars.AZURE_SUBSCRIPTION_ID }}
+    - <span class="kw">run:</span> az storage blob upload ...</pre>
+    </div>
+    <div class="yaml-block">
+      <pre><span class="cmt"># .github/workflows/deploy.yml</span>
+<span class="kw">name:</span> Deploy to AWS
+<span class="kw">on:</span>
+  <span class="kw">push:</span>
+    <span class="kw">branches:</span> [main]
+
+<span class="kw">jobs:</span>
+  <span class="kw">deploy:</span>
+    <span class="kw">runs-on:</span> ubuntu-latest
+    <span class="kw">permissions:</span>
+      <span class="kw">id-token:</span> write
+      <span class="kw">contents:</span> read
+    <span class="kw">steps:</span>
+    - <span class="kw">uses:</span> actions/checkout@v4
+    - <span class="kw">uses:</span> aws-actions/configure-aws-credentials@v4
+      <span class="kw">with:</span>
+        <span class="kw">role-to-assume:</span> arn:aws:iam::123456789:role/github-actions-role
+        <span class="kw">aws-region:</span> us-east-1
+    - <span class="kw">run:</span> aws s3 sync ./build s3://my-bucket/</pre>
+    </div>
+    <div class="yaml-block">
+      <pre><span class="cmt"># .github/workflows/deploy.yml</span>
+<span class="kw">name:</span> Deploy to GCP
+<span class="kw">on:</span>
+  <span class="kw">push:</span>
+    <span class="kw">branches:</span> [main]
+
+<span class="kw">jobs:</span>
+  <span class="kw">deploy:</span>
+    <span class="kw">runs-on:</span> ubuntu-latest
+    <span class="kw">permissions:</span>
+      <span class="kw">id-token:</span> write
+      <span class="kw">contents:</span> read
+    <span class="kw">steps:</span>
+    - <span class="kw">uses:</span> actions/checkout@v4
+    - <span class="kw">uses:</span> google-github-actions/auth@v2
+      <span class="kw">with:</span>
+        <span class="kw">workload_identity_provider:</span> <span class="str">'projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/providers/github-provider'</span>
+        <span class="kw">service_account:</span> <span class="str">'github-actions-sa@PROJECT_ID.iam.gserviceaccount.com'</span>
+    - <span class="kw">run:</span> gcloud storage cp ./build gs://my-bucket/</pre>
+    </div>
+  </div>
+
+  <h2><span class="num">&#9432;</span> Variables / Secrets to Set in GitHub</h2>
+  <table>
+    <tr><th>Provider</th><th>Required Variables</th><th>Type</th></tr>
+    <tr>
+      <td>Azure</td>
+      <td><code>AZURE_CLIENT_ID</code>, <code>AZURE_TENANT_ID</code>, <code>AZURE_SUBSCRIPTION_ID</code></td>
+      <td>Variables (not secrets — these are public IDs)</td>
+    </tr>
+    <tr>
+      <td>AWS</td>
+      <td><code>role-to-assume</code> hardcoded in workflow</td>
+      <td>ARN is public — embed in YAML</td>
+    </tr>
+    <tr>
+      <td>GCP</td>
+      <td><code>workload_identity_provider</code>, <code>service_account</code> hardcoded in workflow</td>
+      <td>Public identifiers — embed in YAML</td>
+    </tr>
+  </table>
+
+</div>
+
+<!-- =================== CONCEPT MAPPING =================== -->
+<div id="mapping" class="section">
+
+  <h2><span class="num">&#9432;</span> Concept Mapping (TL;DR)</h2>
+
+  <div class="concept-map">
+    <div class="label">Concept</div>
+    <div>Azure</div>
+    <div>AWS</div>
+    <div>GCP</div>
+
+    <div class="label">What GitHub trusts</div>
+    <div>App Registration + Federated Credential</div>
+    <div>IAM OIDC Provider</div>
+    <div>WIF Pool + OIDC Provider</div>
+
+    <div class="label">What gets permissions</div>
+    <div>Service Principal</div>
+    <div>IAM Role</div>
+    <div>Service Account</div>
+
+    <div class="label">Where permissions assigned</div>
+    <div>RBAC on resource / subscription</div>
+    <div>IAM Policy attached to Role</div>
+    <div>IAM roles bound to Service Account</div>
+
+    <div class="label">Where to restrict repo/org</div>
+    <div>Federated Credential<br>(claim-based UI / JSON)</div>
+    <div>Trust Policy Condition<br>(JSON)</div>
+    <div>Attribute Condition<br>(CEL expression)</div>
+
+    <div class="label">Impersonation concept</div>
+    <div>Service Principal token exchange</div>
+    <div>IAM Role Assume</div>
+    <div>Service Account Impersonation</div>
+  </div>
+
+  <h2><span class="num">&#9432;</span> Restrict by Scope</h2>
+  <table>
+    <tr><th>Scope</th><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>Entire Org</td>
+      <td>Subject: <code>repo:inspireit-dt/*:*</code></td>
+      <td><code>"StringLike": {"token.actions.githubusercontent.com:sub": "repo:inspireit-dt/*:*"}</code></td>
+      <td><code>assertion.repository_owner == 'inspireit-dt'</code></td>
+    </tr>
+    <tr>
+      <td>Single Repo</td>
+      <td>Subject: <code>repo:inspireit-dt/my-repo:*</code></td>
+      <td><code>"StringEquals": {"token.actions.githubusercontent.com:sub": "repo:inspireit-dt/my-repo:ref:refs/heads/main"}</code></td>
+      <td><code>assertion.repository == 'inspireit-dt/my-repo'</code></td>
+    </tr>
+    <tr>
+      <td>Specific Branch</td>
+      <td>Subject: <code>repo:inspireit-dt/my-repo:ref:refs/heads/main</code></td>
+      <td><code>"StringEquals": {..., "ref:refs/heads/main"}</code></td>
+      <td><code>assertion.ref == 'refs/heads/main'</code></td>
+    </tr>
+    <tr>
+      <td>Environment</td>
+      <td>Subject: <code>repo:inspireit-dt/my-repo:environment:prod</code></td>
+      <td>Use OIDC sub prefix condition</td>
+      <td><code>assertion.sub.contains('environment:prod')</code></td>
+    </tr>
+  </table>
+
+</div>
+
+<footer>
+  Built for learning & reference &mdash; <span>Sultan's Cloud Shaping</span>
+</footer>
+
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.tab[onclick*="${name}"]`).classList.add('active');
+  document.getElementById(name).classList.add('active');
+}
+</script>
+
+</body>
+</html>

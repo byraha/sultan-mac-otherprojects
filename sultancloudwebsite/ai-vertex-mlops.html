@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vertex AI + MLOps</title>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --border: #334155;
+    --text: #e2e8f0; --muted: #94a3b8;
+    --azure: #0078d4; --aws: #ff9900; --gcp: #4285f4;
+    --accent: #38bdf8; --green: #22c55e; --red: #ef4444;
+    --code-bg: #0b1120; --nav-bg: #0b1424;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .topnav { background: var(--nav-bg); border-bottom: 1px solid var(--border); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; position: sticky; top: 0; z-index: 10; flex-wrap: wrap; }
+  .topnav .logo { font-weight: 700; font-size: 1.1rem; background: linear-gradient(135deg, #38bdf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .topnav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; padding: 0.35rem 0.75rem; border-radius: 6px; transition: all 0.2s; }
+  .topnav a:hover, .topnav a.active { color: var(--text); background: rgba(56,189,248,0.1); }
+  .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+  header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  header h1 { font-size: 2rem; background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.4rem; }
+  header .subtitle { color: var(--muted); font-size: 1rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; color: var(--accent); }
+  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  @media (max-width: 900px) { .cards-3 { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); }
+  .card.azure { border-top: 3px solid var(--azure); } .card.aws { border-top: 3px solid var(--aws); } .card.gcp { border-top: 3px solid var(--gcp); }
+  .card h4 { font-size: 1rem; margin-bottom: 0.75rem; color: var(--text); }
+  .card p, .card li { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.4rem; }
+  .card ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  th, td { padding: 0.75rem 1rem; text-align: left; font-size: 0.86rem; }
+  th { background: #1a2744; font-weight: 700; border-bottom: 2px solid var(--border); }
+  td { border-bottom: 1px solid #1e293b; } tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
+  pre, code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.8rem; }
+  .code-block { background: var(--code-bg); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border); overflow-x: auto; margin: 0.75rem 0 1.5rem; }
+  .code-block pre { color: #cbd5e1; line-height: 1.65; }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge.yes { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge.no { background: rgba(239,68,68,0.15); color: var(--red); }
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+  .comparison-row { display: grid; grid-template-columns: 200px 1fr 1fr 1fr; gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 2rem; }
+  .comparison-row > div { background: var(--card); padding: 0.9rem 1rem; }
+  .comparison-row .rlabel { font-weight: 700; font-size: 0.88rem; background: #1a2744; }
+  @media (max-width: 900px) { .comparison-row { grid-template-columns: 1fr 1fr 1fr; } .comparison-row .rlabel { display: none; } }
+  @media (max-width: 600px) { .comparison-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="logo">Sultan's Cloud Shaping</a>
+  <a href="index.html">Portal</a>
+  <a href="wif.html">WIF</a>
+  <a href="deny-policies.html">Deny Policies</a>
+</nav>
+
+<div class="container">
+<header><h1>Vertex AI + MLOps</h1><p class="subtitle">Machine Learning platforms & pipelines &mdash; Azure &middot; AWS &middot; GCP</p></header>
+<h2>Concept</h2><p style="color:var(--muted);margin-bottom:1.5rem;">Vertex AI is GCP's unified ML platform covering the full MLOps lifecycle. Azure uses Azure Machine Learning, and AWS uses SageMaker.</p><div class="comparison-row"><div class="rlabel">ML Platform</div><div>Azure Machine Learning</div><div>Amazon SageMaker</div><div>Vertex AI</div></div><div class="comparison-row"><div class="rlabel">AutoML</div><div>Azure AutoML</div><div>SageMaker Autopilot</div><div>Vertex AI AutoML</div></div><div class="comparison-row"><div class="rlabel">Custom Training</div><div>AML Compute Clusters</div><div>SageMaker Training Jobs</div><div>Vertex AI Custom Training</div></div><div class="comparison-row"><div class="rlabel">Pipeline</div><div>AML Pipelines (YAML/CLI v2)</div><div>SageMaker Pipelines</div><div>Vertex AI Pipelines (Kubeflow)</div></div><div class="comparison-row"><div class="rlabel">Model Registry</div><div>AML Model Registry</div><div>SageMaker Model Registry</div><div>Vertex AI Model Registry</div></div><div class="comparison-row"><div class="rlabel">Online Prediction</div><div>AML Managed Online Endpoints</div><div>SageMaker Real-Time Inference</div><div>Vertex AI Prediction Endpoint</div></div><div class="comparison-row"><div class="rlabel">Feature Store</div><div>AML Managed Feature Store</div><div>SageMaker Feature Store</div><div>Vertex AI Feature Store</div></div><h2>Vertex AI Pipeline (Kubeflow)</h2><div class="code-block"><pre>from kfp import dsl
+from google.cloud import aiplatform
+
+@dsl.component(base_image="python:3.10")
+def preprocess(input_path: str, output_path: str):
+    import pandas as pd
+    df = pd.read_csv(input_path)
+    df = df.dropna()
+    df.to_csv(output_path, index=False)
+
+@dsl.component(base_image="python:3.10",
+    packages_to_install=["sklearn"])
+def train(dataset: str, model_path: str):
+    from sklearn.ensemble import RandomForestClassifier
+    import joblib, pandas as pd
+    df = pd.read_csv(dataset)
+    X, y = df.drop("label", axis=1), df["label"]
+    model = RandomForestClassifier()
+    model.fit(X, y)
+    joblib.dump(model, model_path)
+
+@dsl.pipeline(name="fraud-detection-pipeline")
+def pipeline(input_csv: str):
+    preprocess_task = preprocess(input_path=input_csv,
+        output_path="gs://ml-artifacts/processed.csv")
+    train_task = train(
+        dataset=preprocess_task.outputs["output_path"],
+        model_path="gs://ml-artifacts/model.pkl")
+    train_task.after(preprocess_task)</pre></div><h2>Deploy Model to Endpoint</h2><div class="code-block"><pre># Create endpoint
+gcloud ai endpoints create --region=us-central1 --display-name=fraud-detection
+
+# Deploy model
+gcloud ai endpoints deploy-model ENDPOINT_ID --region=us-central1 --model=MODEL_ID --display-name=fraud-detection-v1 --machine-type=n1-standard-4 --min-replica-count=1 --max-replica-count=5</pre></div>
+<footer>Built for learning &amp; reference &mdash; <span style="color:var(--accent);">Sultan's Cloud Shaping</span></footer></div></body></html>

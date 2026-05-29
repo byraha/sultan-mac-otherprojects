@@ -1,0 +1,95 @@
+# 🔧 Check your identity
+gcloud auth list
+
+# 🔧 Confirm active billing account
+gcloud beta billing accounts list
+
+
+Phase 1: Create Custom IAM Roles
+
+📝 Custom roles give you fine-grained permissions tailored to your org. You said "new roles" — I suggest these:
+Role 	Suggested Permissions 	Purpose
+sl_platform_admin 	compute., container., iam.serviceAccounts.actAs 	Administer GKE and compute resources
+sl_security_admin 	iam., orgpolicy., logging., monitoring. 	Manage security policies and audit
+sl_developer 	resourcemanager.projects.get, container.clusters.get, ... 	Read-only access for devs
+
+🔧 Create roles:
+
+# Platform Admin
+gcloud iam roles create sl_platform_admin \
+  --organization=692154983500 \
+  --title="SimpleLinks Platform Admin" \
+  --description="Administers GKE and compute resources" \
+  --permissions="compute.instances.list,compute.instances.get,container.clusters.get,container.clusters.list,iam.serviceAccounts.actAs" \
+  --stage=GA
+
+# Security Admin
+gcloud iam roles create sl_security_admin \
+  --organization=692154983500 \
+  --title="SimpleLinks Security Admin" \
+  --description="Manages security policies and audit logging" \
+  --permissions="iam.roles.get,iam.roles.list,orgpolicy.policies.get,orgpolicy.policies.set,logging.logEntries.list" \
+  --stage=GA
+
+# Developer (read-only)
+gcloud iam roles create sl_developer \
+  --organization=692154983500 \
+  --title="SimpleLinks Developer" \
+  --description="Read-only access for developers" \
+  --permissions="container.clusters.get,container.clusters.list,resourcemanager.projects.get,resourcemanager.projects.list" \
+  --stage=GA
+
+📝 Note: These are a starting point. You can add more permissions later with gcloud iam roles update.
+
+# Common — shared services (security, tools)
+gcloud resource-manager folders create \
+  --display-name="simplelinks-common" \
+  --organization=692154983500
+
+# Dev — development environment
+gcloud resource-manager folders create \
+  --display-name="simplelinks-dev" \
+  --organization=692154983500
+
+# Staging — pre-production
+gcloud resource-manager folders create \
+  --display-name="simplelinks-staging" \
+  --organization=692154983500
+
+# Prod — production
+gcloud resource-manager folders create \
+  --display-name="simplelinks-prod" \
+  --organization=692154983500
+
+  gcloud resource-manager folders list --organization=692154983500
+
+Parent 	ID
+simplelinks-common 	1036323446971
+simplelinks-dev 	237672332003
+simplelinks-prod 	188252875309
+
+Create subfolders under simplelinks-common (1036323446971):
+
+gcloud resource-manager folders create --display-name="networking" --folder=1036323446971
+gcloud resource-manager folders create --display-name="security" --folder=1036323446971
+gcloud resource-manager folders create --display-name="shared-tools" --folder=1036323446971
+
+Create subfolders under simplelinks-dev (237672332003):
+
+gcloud resource-manager folders create --display-name="platform" --folder=237672332003
+gcloud resource-manager folders create --display-name="data-science" --folder=237672332003
+gcloud resource-manager folders create --display-name="apis" --folder=237672332003
+
+Create subfolders under simplelinks-prod (188252875309):
+
+gcloud resource-manager folders create --display-name="platform" --folder=188252875309
+gcloud resource-manager folders create --display-name="data-science" --folder=188252875309
+gcloud resource-manager folders create --display-name="apis" --folder=188252875309
+
+Staging — no subfolders (as agreed).
+
+After all subfolders are created, verify with:
+
+gcloud resource-manager folders list --folder=1036323446971
+gcloud resource-manager folders list --folder=237672332003
+gcloud resource-manager folders list --folder=188252875309

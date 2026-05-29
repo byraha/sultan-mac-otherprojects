@@ -1,0 +1,71 @@
+Edit zone DNS API token was successfully created
+
+Copy this token to access the Cloudflare API. For security this will not be shown again. Learn more
+CF_API_TOKEN_PLACEHOLDER
+Test this token
+
+To confirm your token is working correctly, copy and paste the below CURL command in a terminal shell to test.
+
+curl "https://api.cloudflare.com/client/v4/user/tokens/verify" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER"
+
+
+curl -X GET "https://api.cloudflare.com/client/v4/zones" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER" \
+-H "Content-Type: application/json" | jq
+
+
+ "account": {
+        "id": "8f61644b7707e1ae61eaf0bc3b79f464",
+        "name": "Mohan.r@inspireit.in's Account"
+
+
+curl -X GET "https://api.cloudflare.com/client/v4/zones/ZONE_ID/dns_records" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER" \
+-H "Content-Type: application/json" | jq
+
+curl -X GET "https://api.cloudflare.com/client/v4/zones" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER" \
+-H "Content-Type: application/json" | jq
+
+curl -X GET "https://api.cloudflare.com/client/v4/zones" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER" \
+-H "Content-Type: application/json" | jq '.result[] | {name,id}'
+
+{
+  "name": "hardwinsoftware.online",
+  "id": "fac07b4358d964f1b8a9eaa66f7a4ccd"
+}
+
+curl -X GET "https://api.cloudflare.com/client/v4/zones/YOUR_ZONE_ID/dns_records" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER" \
+-H "Content-Type: application/json" | jq '.result[] | {name,id,type,content}'
+
+curl -X GET "https://api.cloudflare.com/client/v4/zones/fac07b4358d964f1b8a9eaa66f7a4ccd/dns_records" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER" \
+-H "Content-Type: application/json" | jq '.result[] | {name,id,type,content}'
+
+read token
+
+Edit zone DNS API token was successfully created
+
+Copy this token to access the Cloudflare API. For security this will not be shown again. Learn more
+CF_API_TOKEN_PLACEHOLDER_2
+Test this token
+
+To confirm your token is working correctly, copy and paste the below CURL command in a terminal shell to test.
+
+curl "https://api.cloudflare.com/client/v4/user/tokens/verify" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER_2"
+
+CF_API_TOKEN_PLACEHOLDER_3
+
+curl -X GET "https://api.cloudflare.com/client/v4/user/tokens/verify" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER_3" \
+-H "Content-Type: application/json"
+
+
+
+curl -X GET "https://api.cloudflare.com/client/v4/zones" \
+-H "Authorization: Bearer CF_API_TOKEN_PLACEHOLDER" \
+-H "Content-Type: application/json" | jq

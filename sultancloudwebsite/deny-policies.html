@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deny Policies (Guardrails) — Azure · AWS · GCP | Sultan's Cloud Shaping</title>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --border: #334155;
+    --text: #e2e8f0; --muted: #94a3b8;
+    --azure: #0078d4; --aws: #ff9900; --gcp: #4285f4;
+    --accent: #38bdf8; --green: #22c55e; --red: #ef4444;
+    --code-bg: #0b1120; --nav-bg: #0b1424;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
+  }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* Top nav */
+  .topnav {
+    background: var(--nav-bg); border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem;
+    position: sticky; top: 0; z-index: 10; flex-wrap: wrap;
+  }
+  .topnav .logo {
+    font-weight: 700; font-size: 1.15rem;
+    background: linear-gradient(135deg, #38bdf8, #c084fc);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    text-decoration: none;
+  }
+  .topnav a {
+    color: var(--muted); text-decoration: none; font-size: 0.9rem;
+    padding: 0.35rem 0.75rem; border-radius: 6px; transition: all 0.2s;
+  }
+  .topnav a:hover, .topnav a.active { color: var(--text); background: rgba(56,189,248,0.1); }
+
+  header {
+    text-align: center; padding: 2rem 0 1.5rem;
+    border-bottom: 1px solid var(--border); margin-bottom: 2rem;
+  }
+  header h1 {
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, #f87171, #fb923c, #38bdf8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 0.4rem;
+  }
+  header .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+  .tabs {
+    display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;
+  }
+  .tab {
+    padding: 0.6rem 1.5rem; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--card); color: var(--muted); cursor: pointer; font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+  .tab:hover { border-color: var(--accent); color: var(--text); }
+  .tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  h2 {
+    font-size: 1.4rem; margin: 2rem 0 1rem; padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  .cards-3 {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem;
+  }
+  @media (max-width: 900px) { .cards-3 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--card); border-radius: 12px; padding: 1.5rem;
+    border: 1px solid var(--border); transition: border-color 0.2s;
+  }
+  .card.azure { border-top: 3px solid var(--azure); }
+  .card.aws { border-top: 3px solid var(--aws); }
+  .card.gcp { border-top: 3px solid var(--gcp); }
+
+  .card h3 { font-size: 1.1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .card .icon {
+    font-size: 1.3rem; width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-weight: 700;
+  }
+  .card.azure .icon { background: rgba(0,120,212,0.15); color: var(--azure); }
+  .card.aws .icon { background: rgba(255,153,0,0.15); color: var(--aws); }
+  .card.gcp .icon { background: rgba(66,133,244,0.15); color: var(--gcp); }
+
+  .card p, .card li { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .card ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  .card .highlight { color: var(--green); font-weight: 600; }
+  .card .note { color: #fbbf24; font-size: 0.85rem; margin-top: 0.5rem; }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem;
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  }
+  th, td { padding: 0.75rem 1rem; text-align: left; font-size: 0.86rem; }
+  th { background: #1a2744; font-weight: 700; border-bottom: 2px solid var(--border); }
+  td { border-bottom: 1px solid #1e293b; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; }
+
+  .json-block, .yaml-block, .hcl-block {
+    background: var(--code-bg); border-radius: 10px; padding: 1.25rem;
+    border: 1px solid var(--border); overflow-x: auto; margin: 0.75rem 0 1.5rem;
+  }
+  .json-block pre, .yaml-block pre, .hcl-block pre {
+    color: #cbd5e1; font-size: 0.8rem; line-height: 1.65;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+  .kw { color: #7dd3fc; } .str { color: #a5d6a7; } .cmt { color: #64748b; }
+  .prop { color: #c084fc; } .num { color: #fb923c; } .bool { color: #f87171; }
+
+  .step-box {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1.25rem; margin-bottom: 1rem;
+  }
+  .step-box .step-label {
+    display: inline-block; background: var(--accent); color: var(--bg);
+    padding: 0.2rem 0.7rem; border-radius: 6px; font-size: 0.8rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .step-box h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+  .step-box p, .step-box li { color: var(--muted); font-size: 0.88rem; }
+
+  .comparison-row {
+    display: grid; grid-template-columns: 200px 1fr 1fr 1fr;
+    gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .comparison-row > div { background: var(--card); padding: 0.9rem 1rem; }
+  .comparison-row .rlabel { font-weight: 700; font-size: 0.88rem; background: #1a2744; }
+
+  @media (max-width: 900px) { .comparison-row { grid-template-columns: 1fr 1fr 1fr; } .comparison-row .rlabel { display: none; } }
+  @media (max-width: 600px) { .comparison-row { grid-template-columns: 1fr; } }
+
+  .badge {
+    display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px;
+    font-size: 0.75rem; font-weight: 600; margin-right: 0.3rem;
+  }
+  .badge.yes { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge.no { background: rgba(239,68,68,0.15); color: var(--red); }
+
+  footer {
+    text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem;
+    border-top: 1px solid var(--border); margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="logo">Sultan's Cloud Shaping</a>
+  <a href="index.html">Home</a>
+  <a href="index.html?tab=wif">WIF (OIDC)</a>
+  <a href="deny-policies.html" class="active">Deny Policies</a>
+</nav>
+
+<div class="container">
+
+<header>
+  <h1>Deny Policies (Guardrails)</h1>
+  <p class="subtitle">Preventive Controls — Azure · AWS · GCP — Side-by-Side Reference</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('concept')">Concept Overview</div>
+  <div class="tab" onclick="switchTab('policy-types')">Policy Types</div>
+  <div class="tab" onclick="switchTab('examples')">Real-World Examples</div>
+  <div class="tab" onclick="switchTab('setup')">Step-by-Step Setup</div>
+  <div class="tab" onclick="switchTab('mapping')">Concept Mapping</div>
+</div>
+
+<!-- =================== CONCEPT =================== -->
+<div id="concept" class="section active">
+
+  <h2>What Are Deny Policies?</h2>
+  <p style="color:var(--muted);margin-bottom:1.5rem;">
+    Deny policies are <strong>preventive guardrails</strong> — they <span style="color:var(--red)">block</span> actions even if an identity has allow permissions.
+    Unlike allow policies (which grant access), deny policies override everything.
+    They're the "seatbelt" of cloud security — you can have a driver's license, but the car won't start if the seatbelt isn't fastened.
+  </p>
+
+  <h2>Why Use Deny Policies?</h2>
+  <div class="cards-3">
+    <div class="card azure">
+      <h3><span class="icon">01</span> Prevent Mistakes</h3>
+      <p>Block accidental deletion of production resources</p>
+      <p>Prevent public exposure of storage buckets</p>
+      <p>Enforce encryption on all storage accounts</p>
+    </div>
+    <div class="card aws">
+      <h3><span class="icon">02</span> Enforce Compliance</h3>
+      <p>Restrict VM creation to approved regions only</p>
+      <p>Block creation of resources without required tags</p>
+      <p>Prevent disabling of audit logging</p>
+    </div>
+    <div class="card gcp">
+      <h3><span class="icon">03</span> Limit Blast Radius</h3>
+      <p>Even if an admin account is compromised, certain destructive actions are blocked</p>
+      <p>Organization-wide guardrails cannot be bypassed by project owners</p>
+    </div>
+  </div>
+
+  <h2>Deny vs Allow — How Overrides Work</h2>
+  <table>
+    <tr><th>Scenario</th><th>Allow Policy</th><th>Deny Policy</th><th>Result</th></tr>
+    <tr><td>User has Storage Admin</td><td>✅ Yes</td><td>❌ Deny: No public buckets</td><td><span style="color:var(--red)">DENIED</span></td></tr>
+    <tr><td>User has Org Admin</td><td>✅ Yes</td><td>❌ Deny: No deletion of audit logs</td><td><span style="color:var(--red)">DENIED</span></td></tr>
+    <tr><td>User has no permissions</td><td>❌ No</td><td>— (none)</td><td><span style="color:var(--red)">DENIED</span></td></tr>
+    <tr><td>User has Storage Admin</td><td>✅ Yes</td><td>— (none)</td><td><span style="color:var(--green)">ALLOWED</span></td></tr>
+  </table>
+  <p style="color:var(--muted);font-size:0.85rem;margin-top:0.25rem;">
+    <strong>Key insight:</strong> Even Organization Admins cannot override a deny policy. Deny always wins.
+  </p>
+
+  <h2>Scope & Inheritance</h2>
+  <table>
+    <tr><th></th><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr><td>Top-level scope</td><td>Management Group</td><td>Organization (SCPs)</td><td>Organization (Org Policies)</td></tr>
+    <tr><td>Mid-level scope</td><td>Subscription</td><td>OU / Account</td><td>Folder</td></tr>
+    <tr><td>Low-level scope</td><td>Resource Group</td><td>Account / Permission Boundary</td><td>Project</td></tr>
+    <tr><td>Inheritance</td><td>Top-down (Management Group → Subscription → RG)</td><td>Top-down (Org → OU → Account)</td><td>Top-down (Org → Folder → Project)</td></tr>
+    <tr><td>Can lower-level override?</td><td><span class="badge no">No</span></td><td><span class="badge no">No</span></td><td><span class="badge no">No</span></td></tr>
+  </table>
+
+</div>
+
+<!-- =================== POLICY TYPES =================== -->
+<div id="policy-types" class="section">
+
+  <h2>Available Deny Policy Types — All 3 Clouds</h2>
+
+  <div class="cards-3">
+    <div class="card azure">
+      <h3><span class="icon">Az</span> Azure</h3>
+      <ul>
+        <li><strong>Azure Policy (Deny effect)</strong> — blocks non-compliant resource creation/updates</li>
+        <li><strong>Azure Policy (DeployIfNotExists)</strong> — auto-remediation (not strictly deny but guardrail-adjacent)</li>
+        <li><strong>Management Group scoped</strong> — applies to all subscriptions underneath</li>
+        <li><strong>Built-in policies:</strong> 500+ pre-built by Microsoft</li>
+        <li><strong>Custom policies:</strong> JSON-based with conditions</li>
+      </ul>
+    </div>
+    <div class="card aws">
+      <h3><span class="icon">AW</span> AWS</h3>
+      <ul>
+        <li><strong>Service Control Policies (SCPs)</strong> — guardrails at Org/OU/Account level</li>
+        <li><strong>IAM Permission Boundaries</strong> — limits max permissions a role/user can have</li>
+        <li><strong>Resource Control Policies (RCPs)</strong> — NEW (2024), limits external access to resources</li>
+        <li><strong>Declarative Policies</strong> — NEW (2024), enforce desired state (e.g., block public AMIs)</li>
+        <li><strong>No built-in library</strong> — all are custom JSON policy documents</li>
+      </ul>
+    </div>
+    <div class="card gcp">
+      <h3><span class="icon">GC</span> GCP</h3>
+      <ul>
+        <li><strong>Organization Policy Constraints</strong> — boolean or list-based restrictions</li>
+        <li><strong>IAM Deny Policies</strong> — NEW (2023), deny specific permissions across org/folder/project</li>
+        <li><strong>VPC Service Controls</strong> — data exfiltration prevention (network-level guardrail)</li>
+        <li><strong>50+ built-in constraints</strong> (e.g., <code>constraints/compute.restrictProtocolForwardingCreationForTypes</code>)</li>
+        <li><strong>Custom constraints</strong> — YAML-based with CEL expressions</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Policy Evaluation Order</h2>
+  <table>
+    <tr><th>Evaluation Step</th><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr><td>1</td><td>Authentication</td><td>Authentication</td><td>Authentication</td></tr>
+    <tr><td>2</td><td>RBAC check (allow)</td><td>SCP check (DENY)</td><td>IAM Deny check (DENY)</td></tr>
+    <tr><td>3</td><td>Azure Policy check (DENY)</td><td>Permission Boundary check (DENY)</td><td>Org Policy check (DENY)</td></tr>
+    <tr><td>4</td><td>Request forwarded to Resource Provider</td><td>IAM Policy check (ALLOW)</td><td>IAM Allow check (ALLOW)</td></tr>
+    <tr><td>5</td><td>—</td><td>Resource-based policy check (ALLOW)</td><td>VPC Service Controls (DENY)</td></tr>
+  </table>
+  <p style="color:var(--muted);font-size:0.85rem;margin-top:0.25rem;">
+    <strong>Common pattern:</strong> All three check DENY first, then ALLOW. If deny fires, the request stops immediately.
+  </p>
+
+</div>
+
+<!-- =================== EXAMPLES =================== -->
+<div id="examples" class="section">
+
+  <h2>Example 1: Block Public Storage</h2>
+  <div class="cards-3">
+    <div class="card azure">
+      <h3><span class="icon">Az</span> Azure</h3>
+      <div class="json-block"><pre>{
+  <span class="prop">"if"</span>: {
+    <span class="prop">"allOf"</span>: [{
+      <span class="prop">"field"</span>: <span class="str">"type"</span>,
+      <span class="prop">"equals"</span>: <span class="str">"Microsoft.Storage/storageAccounts"</span>
+    }, {
+      <span class="prop">"field"</span>: <span class="str">"Microsoft.Storage/storageAccounts/allowBlobPublicAccess"</span>,
+      <span class="prop">"equals"</span>: <span class="bool">true</span>
+    }]
+  },
+  <span class="prop">"then"</span>: {
+    <span class="prop">"effect"</span>: <span class="str">"deny"</span>
+  }
+}</pre></div>
+    </div>
+    <div class="card aws">
+      <h3><span class="icon">AW</span> AWS</h3>
+      <div class="json-block"><pre>{
+  <span class="prop">"Version"</span>: <span class="str">"2012-10-17"</span>,
+  <span class="prop">"Statement"</span>: [{
+    <span class="prop">"Effect"</span>: <span class="str">"Deny"</span>,
+    <span class="prop">"Action"</span>: [<span class="str">"s3:PutBucketPublicAccessBlock"</span>],
+    <span class="prop">"Resource"</span>: <span class="str">"*"</span>,
+    <span class="prop">"Condition"</span>: {
+      <span class="prop">"StringNotEquals"</span>: {
+        <span class="prop">"s3:PublicAccessBlockConfiguration"</span>: <span class="str">"true"</span>
+      }
+    }
+  }]
+}</pre></div>
+    </div>
+    <div class="card gcp">
+      <h3><span class="icon">GC</span> GCP</h3>
+      <div class="yaml-block"><pre><span class="cmt"># Org Policy Constraint (Console)</span>
+<span class="prop">Constraint:</span> storage.uniformBucketLevelAccess
+<span class="prop">Policy:</span> Enforce
+<span class="prop">Scope:</span> Organization / Folder / Project
+
+<span class="cmt"># OR — IAM Deny Policy (gcloud)</span>
+gcloud iam policies create deny-public-buckets \
+  --attachment-point=organizations/ORG_ID \
+  --deny-rule=storage.buckets.setIamPolicy</pre></div>
+    </div>
+  </div>
+
+  <h2>Example 2: Restrict VM Types (Block Expensive SKUs)</h2>
+  <div class="cards-3">
+    <div class="card azure">
+      <h3><span class="icon">Az</span> Azure</h3>
+      <div class="json-block"><pre>{
+  <span class="prop">"if"</span>: {
+    <span class="prop">"allOf"</span>: [{
+      <span class="prop">"field"</span>: <span class="str">"type"</span>,
+      <span class="prop">"equals"</span>: <span class="str">"Microsoft.Compute/virtualMachines"</span>
+    }, {
+      <span class="prop">"not"</span>: {
+        <span class="prop">"field"</span>: <span class="str">"Microsoft.Compute/virtualMachines/sku.name"</span>,
+        <span class="prop">"in"</span>: [<span class="str">"Standard_B2s"</span>, <span class="str">"Standard_D2s_v5"</span>]
+      }
+    }]
+  },
+  <span class="prop">"then"</span>: { <span class="prop">"effect"</span>: <span class="str">"deny"</span> }
+}</pre></div>
+    </div>
+    <div class="card aws">
+      <h3><span class="icon">AW</span> AWS</h3>
+      <div class="json-block"><pre>{
+  <span class="prop">"Version"</span>: <span class="str">"2012-10-17"</span>,
+  <span class="prop">"Statement"</span>: [{
+    <span class="prop">"Sid"</span>: <span class="str">"BlockExpensiveEC2"</span>,
+    <span class="prop">"Effect"</span>: <span class="str">"Deny"</span>,
+    <span class="prop">"Action"</span>: [<span class="str">"ec2:RunInstances"</span>],
+    <span class="prop">"Resource"</span>: <span class="str">"arn:aws:ec2:*:*:\instance/*"</span>,
+    <span class="prop">"Condition"</span>: {
+      <span class="prop">"StringNotEquals"</span>: {
+        <span class="prop">"ec2:InstanceType"</span>: [<span class="str">"t3.micro"</span>, <span class="str">"t3.small"</span>]
+      }
+    }
+  }]
+}</pre></div>
+    </div>
+    <div class="card gcp">
+      <h3><span class="icon">GC</span> GCP</h3>
+      <div class="yaml-block"><pre><span class="cmt"># Org Policy: restrict machine types</span>
+<span class="prop">Constraint:</span> compute.restrictMachineTypes
+<span class="prop">Policy:</span> Allow List
+<span class="prop">Allowed values:</span>
+  - n2-standard-2
+  - n2-standard-4
+  - e2-medium
+  - e2-standard-2</pre></div>
+    </div>
+  </div>
+
+  <h2>Example 3: Block Resource Deletion (Accidental Delete Protection)</h2>
+  <div class="cards-3">
+    <div class="card azure">
+      <h3><span class="icon">Az</span> Azure</h3>
+      <p><strong>Azure Resource Locks:</strong></p>
+      <div class="json-block"><pre><span class="cmt"># CLI:</span>
+az lock create --name ProdNoDelete \
+  --resource-group prod-rg \
+  --lock-type CanNotDelete
+<span class="cmt"># CanNotDelete = authorized users can read/modify but NOT delete</span>
+<span class="cmt"># ReadOnly = authorized users can read but NOT modify/delete</span></pre></div>
+    </div>
+    <div class="card aws">
+      <h3><span class="icon">AW</span> AWS</h3>
+      <p><strong>SCP: Deny deletion of production resources</strong></p>
+      <div class="json-block"><pre>{
+  <span class="prop">"Sid"</span>: <span class="str">"DenyDeleteProd"</span>,
+  <span class="prop">"Effect"</span>: <span class="str">"Deny"</span>,
+  <span class="prop">"Action"</span>: [
+    <span class="str">"ec2:TerminateInstances"</span>,
+    <span class="str">"s3:DeleteBucket"</span>,
+    <span class="str">"rds:DeleteDBInstance"</span>
+  ],
+  <span class="prop">"Resource"</span>: <span class="str">"*"</span>,
+  <span class="prop">"Condition"</span>: {
+    <span class="prop">"StringEquals"</span>: {
+      <span class="prop">"aws:ResourceTag/env"</span>: <span class="str">"prod"</span>
+    }
+  }
+}</pre></div>
+    </div>
+    <div class="card gcp">
+      <h3><span class="icon">GC</span> GCP</h3>
+      <p><strong>IAM Deny Policy (new):</strong></p>
+      <div class="yaml-block"><pre><span class="cmt"># Deny specific destructive actions</span>
+gcloud iam policies create no-delete-prod \
+  --attachment-point=cloudresourcemanager.googleapis.com/folders/PROD_FOLDER_ID \
+  --kind=denypolicies \
+  --deny-rule=compute.instances.delete \
+  --deny-rule=compute.disks.delete \
+  --deny-rule=storage.buckets.delete</pre></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =================== SETUP =================== -->
+<div id="setup" class="section">
+
+  <h2>Step-by-Step Setup — All 3 Clouds</h2>
+
+  <div class="step-box">
+    <span class="step-label">Step 1</span>
+    <h3>Navigate to the Guardrail Console</h3>
+  </div>
+  <table>
+    <tr><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td><strong>Console:</strong> Policy → Definitions<br>
+      Or: Management Groups → select MG → Policies
+      </td>
+      <td><strong>Console:</strong> AWS Organizations → Policies → SCPs<br>
+      Or: IAM → Policies → Create Policy (Permission Boundaries)
+      </td>
+      <td><strong>Console:</strong> IAM & Admin → Organization Policies<br>
+      Or: IAM & Admin → IAM → Deny (for new IAM Deny Policies)
+      </td>
+    </tr>
+  </table>
+
+  <div class="step-box">
+    <span class="step-label">Step 2</span>
+    <h3>Create the Policy Definition</h3>
+  </div>
+  <table>
+    <tr><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>
+        + Create Policy Definition<br>
+        <strong>Location:</strong> Management Group or Subscription<br>
+        <strong>Name:</strong> e.g., "Deny Public Storage"<br>
+        <strong>Category:</strong> Storage or Custom<br>
+        <strong>Policy rule:</strong> Paste JSON with <code>"effect": "deny"</code>
+      </td>
+      <td>
+        + Create Policy<br>
+        <strong>Type:</strong> Service Control Policy<br>
+        <strong>Name:</strong> e.g., "Block-S3-Public-Access"<br>
+        <strong>Description:</strong> Prevents public S3 buckets<br>
+        <strong>Policy:</strong> Paste JSON with <code>"Effect": "Deny"</code>
+      </td>
+      <td>
+        + Select Constraint (for org policies)<br>
+        <strong>Filter:</strong> Search by service (e.g., "storage")<br>
+        <strong>Select:</strong> e.g., <code>storage.uniformBucketLevelAccess</code><br>
+        <strong>Custom Constraint (optional):</strong> YAML with CEL<br>
+        OR: + Create Deny Policy (for IAM Deny)
+      </td>
+    </tr>
+  </table>
+
+  <div class="step-box">
+    <span class="step-label">Step 3</span>
+    <h3>Assign to Scope</h3>
+  </div>
+  <table>
+    <tr><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>
+        <strong>Assign Policy</strong> → Select Scope<br>
+        • Management Group<br>
+        • Subscription<br>
+        • Resource Group<br>
+        <br>
+        <strong>Exclusions:</strong> You can exclude specific subscriptions or RGs
+      </td>
+      <td>
+        <strong>Attach SCP:</strong><br>
+        • Root (entire org)<br>
+        • Specific OU (e.g., prod OU)<br>
+        • Specific Account<br>
+        <br>
+        <strong>Note:</strong> SCPs don't apply to the management account
+      </td>
+      <td>
+        <strong>Set Policy:</strong><br>
+        • Organization<br>
+        • Folder<br>
+        • Project<br>
+        <br>
+        <strong>Policy value:</strong> Enforce (block) or Allow List (allow only listed)
+      </td>
+    </tr>
+  </table>
+
+  <div class="step-box">
+    <span class="step-label">Step 4</span>
+    <h3>Test and Verify</h3>
+  </div>
+  <table>
+    <tr><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>
+        • Use <strong>Policy Compliance</strong> tab<br>
+        • Create a test resource that violates policy → see <strong>denied</strong><br>
+        • <strong>Azure Activity Log</strong> shows the deny evaluation<br>
+        • <code>az policy state list</code> for CLI audit
+      </td>
+      <td>
+        • Use <strong>IAM Policy Simulator</strong><br>
+        • Try restricted action → AccessDenied<br>
+        • <strong>CloudTrail</strong> logs show <code>explicit deny</code><br>
+        • <code>aws iam simulate-principal-policy</code>
+      </td>
+      <td>
+        • Use <strong>Policy Analyzer</strong> to test permissions<br>
+        • Try restricted action → <code>PERMISSION_DENIED</code><br>
+        • <strong>Cloud Audit Logs</strong> show policy denial<br>
+        • <code>gcloud org-policies describe</code> to verify
+      </td>
+    </tr>
+  </table>
+
+  <h2>CLI Quick Reference</h2>
+  <div class="cards-3">
+    <div class="card azure">
+      <h3><span class="icon">Az</span> Azure CLI</h3>
+      <div class="json-block"><pre><span class="cmt"># Create policy definition</span>
+az policy definition create \
+  --name deny-public-storage \
+  --rules policy.json
+
+<span class="cmt"># Assign to subscription</span>
+az policy assignment create \
+  --policy deny-public-storage \
+  --scope /subscriptions/SUB_ID
+
+<span class="cmt"># Check compliance</span>
+az policy state list \
+  --policy-assignment deny-public-storage</pre></div>
+    </div>
+    <div class="card aws">
+      <h3><span class="icon">AW</span> AWS CLI</h3>
+      <div class="json-block"><pre><span class="cmt"># Create SCP</span>
+aws organizations create-policy \
+  --name BlockPublicBuckets \
+  --type SERVICE_CONTROL_POLICY \
+  --content file://scp.json
+
+<span class="cmt"># Attach to OU</span>
+aws organizations attach-policy \
+  --policy-id p-xxxxx \
+  --target-id ou-xxxxx
+
+<span class="cmt"># Simulate</span>
+aws iam simulate-principal-policy \
+  --policy-source-arn arn:aws:iam::... \
+  --action-names s3:CreateBucket</pre></div>
+    </div>
+    <div class="card gcp">
+      <h3><span class="icon">GC</span> GCP CLI</h3>
+      <div class="json-block"><pre><span class="cmt"># Set org policy constraint</span>
+gcloud org-policies set-policy policy.yaml \
+  --organization=ORG_ID
+
+<span class="cmt"># Describe constraint</span>
+gcloud org-policies describe \
+  constraints/storage.uniformBucketLevelAccess \
+  --organization=ORG_ID
+
+<span class="cmt"># Create IAM deny policy</span>
+gcloud iam policies create deny-prod-delete \
+  --attachment-point=folders/PROD_FOLDER \
+  --kind=denypolicies \
+  --deny-rule=compute.instances.delete</pre></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =================== MAPPING =================== -->
+<div id="mapping" class="section">
+
+  <h2>Concept Mapping — Guardrails & Deny Policies</h2>
+
+  <div class="comparison-row">
+    <div class="rlabel">Primary Deny<br>Mechanism</div>
+    <div>Azure Policy<br><span style="color:var(--muted);font-size:0.8rem;">(Deny / DeployIfNotExists)</span></div>
+    <div>SCPs<br><span style="color:var(--muted);font-size:0.8rem;">(Service Control Policies)</span></div>
+    <div>Org Policy Constraints +<br>IAM Deny Policies</div>
+  </div>
+
+  <div class="comparison-row">
+    <div class="rlabel">Policy Language</div>
+    <div>JSON (ARM policy rule)</div>
+    <div>JSON (IAM policy document)</div>
+    <div>YAML (org policies) + CEL (custom constraints)</div>
+  </div>
+
+  <div class="comparison-row">
+    <div class="rlabel">Override Possible?</div>
+    <div><span class="badge no">No</span></div>
+    <div><span class="badge no">No</span></div>
+    <div><span class="badge no">No</span></div>
+  </div>
+
+  <div class="comparison-row">
+    <div class="rlabel">Sub-resource<br>Scope</div>
+    <div>Permission Boundaries<br><span style="color:var(--muted);font-size:0.8rem;">(limits max perms of IAM roles)</span></div>
+    <div>IAM Permission Boundaries<br><span style="color:var(--muted);font-size:0.8rem;">(caps IAM role permissions)</span></div>
+    <div>IAM Deny Policies<br><span style="color:var(--muted);font-size:0.8rem;">(deny specific permissions)</span></div>
+  </div>
+
+  <div class="comparison-row">
+    <div class="rlabel">Network-level<br>Guardrail</div>
+    <div>Azure Firewall Policy /<br>NSG Rules</div>
+    <div>VPC Endpoint Policies<br>+ AWS Network Firewall</div>
+    <div>VPC Service Controls<br><span style="color:var(--muted);font-size:0.8rem;">(data exfiltration prevention)</span></div>
+  </div>
+
+  <div class="comparison-row">
+    <div class="rlabel">Accidental<br>Delete Lock</div>
+    <div>Azure Resource Locks<br><span style="color:var(--muted);font-size:0.8rem;">(CanNotDelete / ReadOnly)</span></div>
+    <div>SCP + Tag-based Conditions<br><span style="color:var(--muted);font-size:0.8rem;">(no native lock concept)</span></div>
+    <div>Deletion Protection flags<br><span style="color:var(--muted);font-size:0.8rem;">(per-resource) + IAM Deny</span></div>
+  </div>
+
+  <div class="comparison-row">
+    <div class="rlabel">Remediation</div>
+    <div>DeployIfNotExists<br><span style="color:var(--muted);font-size:0.8rem;">(auto-fix non-compliant resources)</span></div>
+    <div>AWS Config Rules<br><span style="color:var(--muted);font-size:0.8rem;">(detect + auto-remediate)</span></div>
+    <div>Org Policy Dry Run<br><span style="color:var(--muted);font-size:0.8rem;">(audit mode — log violations only)</span></div>
+  </div>
+
+  <h2>When to Use Which</h2>
+  <table>
+    <tr><th>Goal</th><th>Azure</th><th>AWS</th><th>GCP</th></tr>
+    <tr>
+      <td>Block all public buckets</td>
+      <td>Azure Policy (Deny)</td>
+      <td>SCP (Deny s3:PutBucketAcl)</td>
+      <td>Org Policy (storage.uniformBucketLevelAccess)</td>
+    </tr>
+    <tr>
+      <td>Restrict regions</td>
+      <td>Azure Policy (allowedLocations)</td>
+      <td>SCP (Condition: aws:RequestedRegion)</td>
+      <td>Org Policy (constraints/gcp.resourceLocations)</td>
+    </tr>
+    <tr>
+      <td>Enforce resource tags</td>
+      <td>Azure Policy (require tag + deny)</td>
+      <td>SCP (Condition: aws:RequestTag)</td>
+      <td>Org Policy (custom constraint + CEL)</td>
+    </tr>
+    <tr>
+      <td>Prevent IAM changes</td>
+      <td>Azure Policy (Deny Action)</td>
+      <td>SCP (Deny iam:*)</td>
+      <td>IAM Deny Policy</td>
+    </tr>
+    <tr>
+      <td>Block VM deletion</td>
+      <td>Resource Lock (CanNotDelete)</td>
+      <td>SCP + Tag condition</td>
+      <td>IAM Deny Policy + Deletion Protection</td>
+    </tr>
+    <tr>
+      <td>Prevent data exfiltration</td>
+      <td>Azure Firewall / Private Endpoints</td>
+      <td>VPC Endpoint Policies</td>
+      <td>VPC Service Controls</td>
+    </tr>
+  </table>
+
+</div>
+
+<footer>
+  Built for learning & reference &mdash; <span style="color:var(--accent);">Sultan's Cloud Shaping</span>
+</footer>
+
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const tab = [...document.querySelectorAll('.tab')].find(t => t.getAttribute('onclick').includes(name));
+  if (tab) tab.classList.add('active');
+  document.getElementById(name).classList.add('active');
+}
+</script>
+
+</body>
+</html>

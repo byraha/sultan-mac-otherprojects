@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini + AI Studio</title>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --border: #334155;
+    --text: #e2e8f0; --muted: #94a3b8;
+    --azure: #0078d4; --aws: #ff9900; --gcp: #4285f4;
+    --accent: #38bdf8; --green: #22c55e; --red: #ef4444;
+    --code-bg: #0b1120; --nav-bg: #0b1424;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .topnav { background: var(--nav-bg); border-bottom: 1px solid var(--border); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; position: sticky; top: 0; z-index: 10; flex-wrap: wrap; }
+  .topnav .logo { font-weight: 700; font-size: 1.1rem; background: linear-gradient(135deg, #38bdf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .topnav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; padding: 0.35rem 0.75rem; border-radius: 6px; transition: all 0.2s; }
+  .topnav a:hover, .topnav a.active { color: var(--text); background: rgba(56,189,248,0.1); }
+  .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+  header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  header h1 { font-size: 2rem; background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.4rem; }
+  header .subtitle { color: var(--muted); font-size: 1rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; color: var(--accent); }
+  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  @media (max-width: 900px) { .cards-3 { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); }
+  .card.azure { border-top: 3px solid var(--azure); } .card.aws { border-top: 3px solid var(--aws); } .card.gcp { border-top: 3px solid var(--gcp); }
+  .card h4 { font-size: 1rem; margin-bottom: 0.75rem; color: var(--text); }
+  .card p, .card li { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.4rem; }
+  .card ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  th, td { padding: 0.75rem 1rem; text-align: left; font-size: 0.86rem; }
+  th { background: #1a2744; font-weight: 700; border-bottom: 2px solid var(--border); }
+  td { border-bottom: 1px solid #1e293b; } tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
+  pre, code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.8rem; }
+  .code-block { background: var(--code-bg); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border); overflow-x: auto; margin: 0.75rem 0 1.5rem; }
+  .code-block pre { color: #cbd5e1; line-height: 1.65; }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge.yes { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge.no { background: rgba(239,68,68,0.15); color: var(--red); }
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+  .comparison-row { display: grid; grid-template-columns: 200px 1fr 1fr 1fr; gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 2rem; }
+  .comparison-row > div { background: var(--card); padding: 0.9rem 1rem; }
+  .comparison-row .rlabel { font-weight: 700; font-size: 0.88rem; background: #1a2744; }
+  @media (max-width: 900px) { .comparison-row { grid-template-columns: 1fr 1fr 1fr; } .comparison-row .rlabel { display: none; } }
+  @media (max-width: 600px) { .comparison-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="logo">Sultan's Cloud Shaping</a>
+  <a href="index.html">Portal</a>
+  <a href="wif.html">WIF</a>
+  <a href="deny-policies.html">Deny Policies</a>
+</nav>
+
+<div class="container">
+<header><h1>Gemini + AI Studio</h1><p class="subtitle">Generative AI platforms &mdash; Azure OpenAI &middot; AWS Bedrock &middot; GCP Gemini</p></header>
+<h2>Concept</h2><p style="color:var(--muted);margin-bottom:1.5rem;">Generative AI platforms provide foundational LLMs as a service. Each cloud has its own offering with varying models and capabilities.</p><div class="comparison-row"><div class="rlabel">Gen AI Platform</div><div>Azure OpenAI Service</div><div>Amazon Bedrock</div><div>Vertex AI Generative AI (Gemini)</div></div><div class="comparison-row"><div class="rlabel">Primary Models</div><div>GPT-4o, GPT-4, o1, GPT-3.5</div><div>Claude 3, Llama 3, Titan, Mistral</div><div>Gemini 2.5 Pro, Gemini Flash, PaLM 2</div></div><div class="comparison-row"><div class="rlabel">Playground</div><div>Azure AI Studio</div><div>Amazon Bedrock Playground</div><div>Google AI Studio</div></div><div class="comparison-row"><div class="rlabel">Code Generation</div><div>GitHub Copilot + Azure OpenAI</div><div>Amazon Q Developer</div><div>Gemini Code Assist</div></div><div class="comparison-row"><div class="rlabel">Embeddings</div><div>text-embedding-ada-002, text-embedding-3</div><div>Titan Embeddings, Cohere Embed</div><div>text-embedding-004</div></div><div class="comparison-row"><div class="rlabel">Multimodal</div><div>GPT-4o (text+image+audio)</div><div>Claude 3 (text+image)</div><div>Gemini 2.5 (text+image+audio+video+code)</div></div><div class="comparison-row"><div class="rlabel">Fine-Tuning</div><div>GPT-3.5-turbo fine-tuning</div><div>Custom model import</div><div>Supervised fine-tuning + RLHF</div></div><h2>Gemini API (Python)</h2><div class="code-block"><pre>import vertexai
+from vertexai.generative_models import GenerativeModel, Part
+
+vertexai.init(project="my-project", location="us-central1")
+model = GenerativeModel("gemini-2.5-pro")
+
+# Text generation
+response = model.generate_content(
+    "Explain how VPC Service Controls prevent data exfiltration."
+)
+print(response.text)
+
+# Multimodal (image + text)
+image = Part.from_uri("gs://my-bucket/diagram.png", mime_type="image/png")
+response = model.generate_content(
+    [image, "Redraw this architecture as Terraform HCL."]
+)</pre></div><h2>Google AI Studio</h2><p style="color:var(--muted);">Google AI Studio (aistudio.google.com) is a free web-based playground for prototyping Gemini prompts. Features: system instructions, temperature tuning, safety settings, token counting, and one-click "Get code" for Python/Node.js/curl.</p><div class="cards-3">
+  <div class="card azure"><h4>&#9675; Azure &mdash; Azure OpenAI</h4><p><strong>Models:</strong> GPT-4o, GPT-4, o1. Content filtering, private networking, RBAC.</p><p>CLI: <code>az cognitiveservices account create --kind OpenAI --name my-openai -g prod-rg --sku S0</code></p></div>
+  <div class="card aws"><h4>&#9675; AWS &mdash; AWS Bedrock</h4><p><strong>Models:</strong> Claude 3, Llama 3, Titan, Mistral, Cohere. Serverless API. Model customization.</p><p>CLI: <code>aws bedrock list-foundation-models</code></p></div>
+  <div class="card gcp"><h4>&#9675; GCP &mdash; GCP Gemini</h4><p><strong>Models:</strong> Gemini 2.5 Pro (2M token context), Gemini Flash, Imagen. Integrated with Vertex AI for MLOps and governance.</p></div>
+</div>
+<footer>Built for learning &amp; reference &mdash; <span style="color:var(--accent);">Sultan's Cloud Shaping</span></footer></div></body></html>

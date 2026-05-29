@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Service Connect</title>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --border: #334155;
+    --text: #e2e8f0; --muted: #94a3b8;
+    --azure: #0078d4; --aws: #ff9900; --gcp: #4285f4;
+    --accent: #38bdf8; --green: #22c55e; --red: #ef4444;
+    --code-bg: #0b1120; --nav-bg: #0b1424;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .topnav { background: var(--nav-bg); border-bottom: 1px solid var(--border); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; position: sticky; top: 0; z-index: 10; flex-wrap: wrap; }
+  .topnav .logo { font-weight: 700; font-size: 1.1rem; background: linear-gradient(135deg, #38bdf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .topnav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; padding: 0.35rem 0.75rem; border-radius: 6px; transition: all 0.2s; }
+  .topnav a:hover, .topnav a.active { color: var(--text); background: rgba(56,189,248,0.1); }
+  .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+  header { text-align: center; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  header h1 { font-size: 2rem; background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.4rem; }
+  header .subtitle { color: var(--muted); font-size: 1rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; color: var(--accent); }
+  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  @media (max-width: 900px) { .cards-3 { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); }
+  .card.azure { border-top: 3px solid var(--azure); } .card.aws { border-top: 3px solid var(--aws); } .card.gcp { border-top: 3px solid var(--gcp); }
+  .card h4 { font-size: 1rem; margin-bottom: 0.75rem; color: var(--text); }
+  .card p, .card li { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.4rem; }
+  .card ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  th, td { padding: 0.75rem 1rem; text-align: left; font-size: 0.86rem; }
+  th { background: #1a2744; font-weight: 700; border-bottom: 2px solid var(--border); }
+  td { border-bottom: 1px solid #1e293b; } tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
+  pre, code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.8rem; }
+  .code-block { background: var(--code-bg); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border); overflow-x: auto; margin: 0.75rem 0 1.5rem; }
+  .code-block pre { color: #cbd5e1; line-height: 1.65; }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge.yes { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge.no { background: rgba(239,68,68,0.15); color: var(--red); }
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+  .comparison-row { display: grid; grid-template-columns: 200px 1fr 1fr 1fr; gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 2rem; }
+  .comparison-row > div { background: var(--card); padding: 0.9rem 1rem; }
+  .comparison-row .rlabel { font-weight: 700; font-size: 0.88rem; background: #1a2744; }
+  @media (max-width: 900px) { .comparison-row { grid-template-columns: 1fr 1fr 1fr; } .comparison-row .rlabel { display: none; } }
+  @media (max-width: 600px) { .comparison-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="logo">Sultan's Cloud Shaping</a>
+  <a href="index.html">Portal</a>
+  <a href="wif.html">WIF</a>
+  <a href="deny-policies.html">Deny Policies</a>
+</nav>
+
+<div class="container">
+<header><h1>Private Service Connect</h1><p class="subtitle">Private access to cloud services &mdash; Azure &middot; AWS &middot; GCP</p></header>
+<h2>Concept</h2><p style="color:var(--muted);margin-bottom:1.5rem;">Private Service Connect (PSC) allows <strong>private, RFC 1918 IP access</strong> to Google-managed and third-party services without traversing the public internet. The Azure equivalent is Private Link, and AWS uses VPC Endpoints / PrivateLink.</p><div class="comparison-row"><div class="rlabel">Cloud-native service access</div><div>Private Link / Private Endpoint</div><div>VPC Endpoint (Gateway / Interface)</div><div>Private Service Connect</div></div><div class="comparison-row"><div class="rlabel">Third-party services</div><div>Private Link Service</div><div>VPC Endpoint Service (PrivateLink)</div><div>Private Service Connect (published services)</div></div><div class="comparison-row"><div class="rlabel">Consumer IP</div><div>Private IP in your VNet</div><div>Private IP in your VPC</div><div>Private IP in your VPC subnet</div></div><div class="comparison-row"><div class="rlabel">Cross-org/account</div><div>Yes (Private Link across tenants)</div><div>Yes (PrivateLink across accounts)</div><div>Yes (PSC across organizations)</div></div><div class="comparison-row"><div class="rlabel">Data on Google backbone</div><div>N/A</div><div>N/A</div><div>Yes (always on Google network)</div></div><div class="comparison-row"><div class="rlabel">NAT Required</div><div>No (direct private IP)</div><div>No (direct private IP)</div><div>Yes (PSC NAT subnet /28 per region)</div></div><h2>Create PSC Service Attachment (GCP Producer)</h2><div class="code-block"><pre># Producer creates service attachment
+gcloud compute service-attachments create my-svc-attach \
+  --region=us-central1 \
+  --producer-forwarding-rule=my-forwarding-rule \
+  --connection-preference=ACCEPT_AUTOMATIC \
+  --nat-subnets=psc-nat-subnet
+
+# Consumer creates endpoint
+gcloud compute forwarding-rules create psc-endpoint \
+  --region=us-central1 \
+  --network=consumer-vpc \
+  --address=172.16.1.100 \
+  --target-service-attachment=projects/producer-project/regions/us-central1/serviceAttachments/my-svc-attach</pre></div><h2>Side-by-Side CLI</h2><div class="cards-3">
+  <div class="card azure"><h4>&#9675; Azure &mdash; Azure Private Link</h4><div class="code-block"><pre>az network private-endpoint create \
+  --name myPE --resource-group prod-rg \
+  --vnet-name myVNet --subnet mySubnet \
+  --private-connection-resource-id \
+  /subscriptions/.../storageAccounts/myblob \
+  --group-id blob</pre></div></div>
+  <div class="card aws"><h4>&#9675; AWS &mdash; AWS VPC Endpoint</h4><div class="code-block"><pre>aws ec2 create-vpc-endpoint \
+  --vpc-id vpc-xxx \
+  --service-name \
+  com.amazonaws.region.s3 \
+  --vpc-endpoint-type Gateway \
+  --route-table-ids rtb-xxx</pre></div></div>
+  <div class="card gcp"><h4>&#9675; GCP &mdash; GCP PSC</h4><div class="code-block"><pre>gcloud compute forwarding-rules create \
+  psc-ep --region=us-central1 \
+  --network=my-vpc \
+  --target-service-attachment=\
+  projects/PROD/regions/us-central1/\
+  serviceAttachments/my-attach</pre></div></div>
+</div>
+<footer>Built for learning &amp; reference &mdash; <span style="color:var(--accent);">Sultan's Cloud Shaping</span></footer></div></body></html>

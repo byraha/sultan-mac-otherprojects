@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sultan's Cloud Shaping — Multi-Cloud Learning Portal</title>
+<style>
+  :root { --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --azure: #0078d4; --aws: #ff9900; --gcp: #4285f4; --accent: #38bdf8; --green: #22c55e; --purple: #c084fc; --orange: #fb923c; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+  .topnav { background: #0b1424; border-bottom:1px solid var(--border); padding:0.75rem 1.5rem; display:flex; align-items:center; gap:1.5rem; position:sticky; top:0; z-index:10; flex-wrap:wrap; }
+  .topnav .logo { font-weight:700; font-size:1.1rem; background:linear-gradient(135deg,#38bdf8,#c084fc); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-decoration:none; }
+  .topnav a { color:var(--muted); text-decoration:none; font-size:0.9rem; padding:0.35rem 0.75rem; border-radius:6px; transition:all 0.2s; }
+  .topnav a:hover, .topnav a.active { color:var(--text); background:rgba(56,189,248,0.1); }
+  .container { max-width:1200px; margin:0 auto; padding:2rem 1.5rem; }
+  .hero { text-align:center; padding:2.5rem 0 2rem; }
+  .hero h1 { font-size:2.6rem; background:linear-gradient(135deg,#38bdf8,#818cf8,#c084fc,#f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:0.5rem; }
+  .hero .tagline { color:var(--muted); font-size:1.05rem; max-width:600px; margin:0 auto 0.5rem; }
+  .cloud-badges { display:flex; gap:0.6rem; justify-content:center; flex-wrap:wrap; margin:1rem 0; }
+  .cloud-badge { padding:0.25rem 0.85rem; border-radius:6px; font-size:0.8rem; font-weight:600; }
+  .cloud-badge.az { background:rgba(0,120,212,0.12); color:var(--azure); border:1px solid rgba(0,120,212,0.25); }
+  .cloud-badge.aw { background:rgba(255,153,0,0.12); color:var(--aws); border:1px solid rgba(255,153,0,0.25); }
+  .cloud-badge.gc { background:rgba(66,133,244,0.12); color:var(--gcp); border:1px solid rgba(66,133,244,0.25); }
+
+  .category { margin-bottom:2rem; }
+  .cat-header { display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:2px solid var(--border); }
+  .cat-header h2 { font-size:1.3rem; }
+  .cat-header .cat-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+  .c-iam { background:rgba(56,189,248,0.12); color:var(--accent); }
+  .c-net { background:rgba(34,197,94,0.12); color:var(--green); }
+  .c-k8s { background:rgba(168,85,247,0.12); color:#a855f7; }
+  .c-dev { background:rgba(251,146,60,0.12); color:var(--orange); }
+  .c-api { background:rgba(248,113,113,0.12); color:#f87171; }
+  .c-obs { background:rgba(250,204,21,0.12); color:#facc15; }
+
+  .links { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:0.6rem; }
+  .link-card { display:flex; align-items:center; gap:0.75rem; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; text-decoration:none; color:var(--text); transition:all 0.2s; }
+  .link-card:hover { border-color:var(--accent); transform:translateY(-1px); box-shadow:0 4px 16px rgba(56,189,248,0.08); }
+  .link-card .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .link-card .title { font-size:0.92rem; font-weight:600; }
+  .link-card .desc { font-size:0.78rem; color:var(--muted); }
+  .link-card .text { display:flex; flex-direction:column; }
+
+  .extra-links { display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:0.25rem; }
+  .extra-links a { font-size:0.78rem; color:var(--muted); text-decoration:none; padding:0.2rem 0.6rem; border-radius:4px; background:rgba(255,255,255,0.03); border:1px solid var(--border); }
+  .extra-links a:hover { color:var(--accent); border-color:var(--accent); }
+
+  footer { text-align:center; padding:2rem; color:var(--muted); font-size:0.85rem; border-top:1px solid var(--border); margin-top:3rem; }
+  footer span { color:var(--accent); }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="logo">Sultan's Cloud Shaping</a>
+  <a href="index.html" class="active">Portal</a>
+  <a href="wif.html">WIF</a>
+  <a href="deny-policies.html">Deny Policies</a>
+</nav>
+
+<div class="container">
+
+<div class="hero">
+  <h1>Sultan's Cloud Shaping</h1>
+  <p class="tagline">Side-by-side comparisons across Azure, AWS & GCP — built for learning, interview prep, and reference.</p>
+  <div class="cloud-badges">
+    <span class="cloud-badge az">Azure</span>
+    <span class="cloud-badge aw">AWS</span>
+    <span class="cloud-badge gc">GCP</span>
+  </div>
+</div>
+
+<!-- IAM Foundation -->
+<div class="category">
+  <div class="cat-header"><span class="cat-icon c-iam">&#128274;</span><h2>IAM Foundation</h2></div>
+  <div class="links">
+    <a href="iam-org-hierarchy.html" class="link-card"><span class="dot" style="background:var(--accent)"></span><div class="text"><span class="title">Org Hierarchy &amp; Folders</span><span class="desc">Management Groups · OUs · Folders. Policy inheritance, billing boundaries.</span></div></a>
+    <a href="iam-custom-roles.html" class="link-card"><span class="dot" style="background:var(--accent)"></span><div class="text"><span class="title">Custom IAM Roles</span><span class="desc">Scoped permissions. JSON (Azure/AWS) vs YAML/CLI (GCP). Lifecycle stages.</span></div></a>
+    <a href="iam-conditions.html" class="link-card"><span class="dot" style="background:var(--accent)"></span><div class="text"><span class="title">IAM Conditions</span><span class="desc">ABAC — time-bound, IP-restricted, tag-based access. CEL vs JSON vs CA.</span></div></a>
+    <a href="wif.html" class="link-card"><span class="dot" style="background:var(--accent)"></span><div class="text"><span class="title">Service Accounts + WIF</span><span class="desc">Workload Identity Federation (OIDC). GitHub Actions to cloud — no secrets.</span></div></a>
+    <a href="deny-policies.html" class="link-card"><span class="dot" style="background:var(--accent)"></span><div class="text"><span class="title">Deny Policies</span><span class="desc">Azure Policy · AWS SCPs · GCP Org Constraints. Preventive guardrails.</span></div></a>
+    <a href="iam-vpc-service-controls.html" class="link-card"><span class="dot" style="background:var(--accent)"></span><div class="text"><span class="title">VPC Service Controls</span><span class="desc">Data exfiltration perimeters. Service attachments, ingress/egress, dry run.</span></div></a>
+    <a href="iam-policy-analyzer.html" class="link-card"><span class="dot" style="background:var(--accent)"></span><div class="text"><span class="title">Policy Analyzer &amp; Audit</span><span class="desc">Audit who can access what. Over-privileged detection. Audit logging.</span></div></a>
+    <a href="iam-project-factory.html" class="link-card"><span class="dot" style="background:var(--accent)"></span><div class="text"><span class="title">Project Factory</span><span class="desc">Automated project/account provisioning. CFT, Blueprints, Control Tower.</span></div></a>
+  </div>
+</div>
+
+<!-- Networking -->
+<div class="category">
+  <div class="cat-header"><span class="cat-icon c-net">&#127760;</span><h2>Networking</h2></div>
+  <div class="links">
+    <a href="networking-hybrid-vpn.html" class="link-card"><span class="dot" style="background:var(--green)"></span><div class="text"><span class="title">Hybrid Networking + VPN</span><span class="desc">Connect on-prem to cloud. VPN, ExpressRoute, Direct Connect, Interconnect.</span></div></a>
+    <a href="networking-psc.html" class="link-card"><span class="dot" style="background:var(--green)"></span><div class="text"><span class="title">Private Service Connect</span><span class="desc">Private Link · VPC Endpoints · PSC. Service attachments and routing.</span></div></a>
+    <a href="networking-hybrid-dns.html" class="link-card"><span class="dot" style="background:var(--green)"></span><div class="text"><span class="title">Hybrid DNS</span><span class="desc">Cloud DNS · Route 53 · Private Zones. Inbound/outbound forwarding.</span></div></a>
+  </div>
+</div>
+
+<!-- Kubernetes -->
+<div class="category">
+  <div class="cat-header"><span class="cat-icon c-k8s">&#9881;</span><h2>Kubernetes</h2></div>
+  <div class="links">
+    <a href="k8s-gke-microservices.html" class="link-card"><span class="dot" style="background:#a855f7"></span><div class="text"><span class="title">GKE + Microservices</span><span class="desc">AKS / EKS / GKE. Microservice deployment, service mesh, autoscaling.</span></div></a>
+    <a href="k8s-helm.html" class="link-card"><span class="dot" style="background:#a855f7"></span><div class="text"><span class="title">Helm Package Management</span><span class="desc">Charts, releases, rollbacks. OCI registries. Values, templates, hooks.</span></div></a>
+  </div>
+</div>
+
+<!-- DevOps / IaC -->
+<div class="category">
+  <div class="cat-header"><span class="cat-icon c-dev">&#128640;</span><h2>DevOps / IaC</h2></div>
+  <div class="links">
+    <a href="devops-terraform.html" class="link-card"><span class="dot" style="background:var(--orange)"></span><div class="text"><span class="title">Terraform Pipeline</span><span class="desc">State backends (GCS/S3/Azure). CI/CD integration. Plan + apply workflows.</span></div></a>
+    <a href="devops-cicd.html" class="link-card"><span class="dot" style="background:var(--orange)"></span><div class="text"><span class="title">CI/CD</span><span class="desc">Cloud Build · CodePipeline · Azure DevOps. GitHub Actions with WIF.</span></div></a>
+    <a href="devops-sonarqube-checkov.html" class="link-card"><span class="dot" style="background:var(--orange)"></span><div class="text"><span class="title">SonarQube + Checkov</span><span class="desc">Code quality + IaC security scanning. SAST pipeline. Quality gates.</span></div></a>
+    <a href="devops-ansible.html" class="link-card"><span class="dot" style="background:var(--orange)"></span><div class="text"><span class="title">Ansible Automation</span><span class="desc">Playbooks, dynamic inventory, GCP/Azure/AWS modules. Idempotent config.</span></div></a>
+  </div>
+</div>
+
+<!-- APIs & AI/ML -->
+<div class="category">
+  <div class="cat-header"><span class="cat-icon c-api">&#9889;</span><h2>APIs &amp; AI/ML</h2></div>
+  <div class="links">
+    <a href="api-gateway.html" class="link-card"><span class="dot" style="background:#f87171"></span><div class="text"><span class="title">API Gateway (Endpoints)</span><span class="desc">APIM · API Gateway · Cloud Endpoints. Auth, rate limiting, OpenAPI.</span></div></a>
+    <a href="ai-vertex-mlops.html" class="link-card"><span class="dot" style="background:#f87171"></span><div class="text"><span class="title">Vertex AI + MLOps</span><span class="desc">SageMaker · AML · Vertex AI. Pipelines, feature store, model deployment.</span></div></a>
+    <a href="ai-gemini-studio.html" class="link-card"><span class="dot" style="background:#f87171"></span><div class="text"><span class="title">Gemini + AI Studio</span><span class="desc">Generative AI. Azure OpenAI · Bedrock · Gemini. Multimodal, fine-tuning.</span></div></a>
+  </div>
+</div>
+
+<!-- Observability & Ops -->
+<div class="category">
+  <div class="cat-header"><span class="cat-icon c-obs">&#128200;</span><h2>Observability &amp; Ops</h2></div>
+  <div class="links">
+    <a href="obs-grafana.html" class="link-card"><span class="dot" style="background:#facc15"></span><div class="text"><span class="title">Grafana Dashboards</span><span class="desc">Managed + self-hosted Grafana. CloudWatch/Monitor data sources. Alerts.</span></div></a>
+    <a href="obs-linux.html" class="link-card"><span class="dot" style="background:#facc15"></span><div class="text"><span class="title">Linux Diagnostics</span><span class="desc">Essential cheat sheet. Azure/AWS/GCP VM troubleshooting commands.</span></div></a>
+  </div>
+</div>
+
+<footer>Built for learning &amp; reference &mdash; <span>Sultan's Cloud Shaping</span></footer>
+
+</div>
+</body>
+</html>

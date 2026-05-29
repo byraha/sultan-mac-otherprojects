@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="nav.brand">Order Catering — High Q Services | Corporate Catering Bangalore</title>
+  <meta name="description" content="Order premium corporate catering from High Q Services in Bangalore. Multi-cuisine menus, FSSAI certified. Call 9900051336." />
+  <link rel="icon" href="logo.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand"><div class="brand-icon"><img src="logo.jpg" alt="High Q Services" /></div><div class="brand-text"><span class="brand-name" data-i18n="nav.brand">High Q Services</span><span class="brand-tagline" data-i18n="nav.tagline">Enhancing Life Beyond Limits</span></div></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" data-i18n="nav.home">Home</a></li><li><a href="about.html" data-i18n="nav.about">About</a></li><li><a href="services.html" data-i18n="nav.services">Services</a></li><li><a href="gallery.html" data-i18n="nav.gallery">Gallery</a></li><li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <div class="lang-switcher" id="langSwitcher">
+          <a href="#" class="lang-en active">EN</a>
+          <a href="#" class="lang-kn">ಕನ್ನಡ</a>
+        </div>
+        <a href="catering.html" class="btn btn-primary btn-sm" data-i18n="nav.catering">Order Catering</a>
+        <a href="tel:9900051336" class="btn btn-outline btn-sm btn-nav"><i class="fas fa-phone"></i> <span data-i18n="nav.call">9900051336</span></a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="page-header"><div class="container"><span class="section-label" data-i18n="catering.header.label">Catering Order</span><h1 data-i18n-html="true" data-i18n="catering.header.title">Order <span class="accent-text">Catering</span></h1><p data-i18n="catering.header.desc">Place a catering request for your corporate event, daily meals, or special occasion. We'll create a custom menu for you.</p></div></section>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <h2 class="section-title" data-i18n-html="true" data-i18n="catering.benefits.title">Why Choose Our <span class="accent-text">Catering?</span></h2>
+          <div class="benefits-list">
+            <div class="detail-item"><div class="detail-icon" style="background: var(--color-accent-light); color: var(--color-accent);"><i class="fas fa-certificate"></i></div><div><h4 data-i18n="catering.benefits.1.title">FSSAI Certified</h4><p data-i18n="catering.benefits.1.desc">All our kitchens meet strict food safety & hygiene standards.</p></div></div>
+            <div class="detail-item"><div class="detail-icon" style="background: var(--color-accent-light); color: var(--color-accent);"><i class="fas fa-utensils"></i></div><div><h4 data-i18n="catering.benefits.2.title">Multi-Cuisine Menu</h4><p data-i18n="catering.benefits.2.desc">North Indian, South Indian, Chinese, Continental — we do it all.</p></div></div>
+            <div class="detail-item"><div class="detail-icon" style="background: var(--color-accent-light); color: var(--color-accent);"><i class="fas fa-users"></i></div><div><h4 data-i18n="catering.benefits.3.title">Any Scale</h4><p data-i18n="catering.benefits.3.desc">From intimate boardroom lunches to 5000+ guest banquets.</p></div></div>
+            <div class="detail-item"><div class="detail-icon" style="background: var(--color-accent-light); color: var(--color-accent);"><i class="fas fa-clock"></i></div><div><h4 data-i18n="catering.benefits.4.title">On-Time Delivery</h4><p data-i18n="catering.benefits.4.desc">Reliable, punctual service — every single time.</p></div></div>
+            <div class="detail-item"><div class="detail-icon" style="background: var(--color-accent-light); color: var(--color-accent);"><i class="fas fa-leaf"></i></div><div><h4 data-i18n="catering.benefits.5.title">Custom Menus</h4><p data-i18n="catering.benefits.5.desc">Dietary preferences, Jain food, vegan, and allergen-free options available.</p></div></div>
+          </div>
+          <div class="quick-contact"><h3 data-i18n="catering.quick.title">Need it Urgent?</h3><p data-i18n="catering.quick.desc">Call or WhatsApp us for quick orders:</p><div style="display:flex;gap:12px;margin-top:16px;"><a href="tel:9900051336" class="btn btn-primary"><i class="fas fa-phone"></i> 9900051336</a><a href="https://wa.me/919900051336" class="btn btn-outline" style="border-color:#25D366;color:#25D366;"><i class="fab fa-whatsapp"></i> WhatsApp</a></div></div>
+        </div>
+        <div class="contact-form-wrap reveal" data-delay="0.2">
+          <div class="card form-card">
+            <h3 data-i18n="catering.form.title">Catering Request Form</h3>
+            <form id="cateringForm" class="contact-form" action="https://formspree.io/f/mvgonlrg" method="POST">
+              <input type="hidden" name="_subject" value="New Catering Order - High Q Services" />
+              <div class="form-row"><div class="form-group"><label for="cname" data-i18n="catering.form.company">Company / Name *</label><input type="text" id="cname" name="name" required data-i18n="catering.form.company.placeholder" placeholder="Your or company name" /></div><div class="form-group"><label for="cemail" data-i18n="catering.form.email">Email *</label><input type="email" id="cemail" name="email" required data-i18n="catering.form.email.placeholder" placeholder="your@email.com" /></div></div>
+              <div class="form-row"><div class="form-group"><label for="cphone" data-i18n="catering.form.phone">Phone *</label><input type="tel" id="cphone" name="phone" required data-i18n="catering.form.phone.placeholder" placeholder="+91 98765 43210" /></div><div class="form-group"><label for="cdate" data-i18n="catering.form.date">Event Date</label><input type="date" id="cdate" name="date" /></div></div>
+              <div class="form-row"><div class="form-group"><label for="cguests" data-i18n="catering.form.guests">Estimated Guests</label><input type="number" id="cguests" name="guests" data-i18n="catering.form.guests.placeholder" placeholder="e.g. 50" min="1" /></div><div class="form-group"><label for="ctype" data-i18n="catering.form.type">Event Type</label><select id="ctype" name="event-type"><option value="Corporate Lunch" data-i18n="catering.form.type.1">Corporate Lunch</option><option value="Corporate Dinner" data-i18n="catering.form.type.2">Corporate Dinner</option><option value="Conference" data-i18n="catering.form.type.3">Conference / Meeting</option><option value="Party" data-i18n="catering.form.type.4">Celebration / Party</option><option value="Wedding" data-i18n="catering.form.type.5">Wedding / Reception</option><option value="Daily Meals" data-i18n="catering.form.type.6">Daily Meals (Ongoing)</option><option value="Other" data-i18n="catering.form.type.7">Other</option></select></div></div>
+              <div class="form-group"><label for="cpref" data-i18n="catering.form.cuisine">Cuisine Preference</label><select id="cpref" name="cuisine"><option value="Any" data-i18n="catering.form.cuisine.1">Any / Mixed</option><option value="North Indian" data-i18n="catering.form.cuisine.2">North Indian</option><option value="South Indian" data-i18n="catering.form.cuisine.3">South Indian</option><option value="Chinese" data-i18n="catering.form.cuisine.4">Chinese</option><option value="Continental" data-i18n="catering.form.cuisine.5">Continental</option><option value="Jain" data-i18n="catering.form.cuisine.6">Jain</option><option value="Vegan" data-i18n="catering.form.cuisine.7">Vegan</option></select></div>
+              <div class="form-group"><label for="cdietary" data-i18n="catering.form.instructions">Dietary Requirements / Special Instructions</label><textarea id="cdietary" name="instructions" rows="4" data-i18n="catering.form.instructions.placeholder" placeholder="Any allergies, dietary restrictions, or special requests..."></textarea></div>
+              <button type="submit" class="btn btn-primary btn-lg btn-submit" data-i18n="catering.form.submit">Submit Catering Request <i class="fas fa-paper-plane"></i></button>
+              <p style="font-size:13px;color:var(--color-text-light);margin-top:12px;" data-i18n="catering.form.note">We'll confirm availability and share a customized menu within 24 hours.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="index.html" class="navbar-brand" style="margin-bottom:14px;"><div class="brand-icon"><img src="logo.jpg" alt="High Q Services" /></div><div class="brand-text"><span class="brand-name" data-i18n="nav.brand">High Q Services</span><span class="brand-tagline" data-i18n="nav.tagline">Enhancing Life Beyond Limits</span></div></a><p data-i18n="footer.desc">Your trusted partner for catering, facility management, manpower, IT services, and more. Serving Bangalore since 2015.</p><div class="footer-social"><a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a><a href="https://wa.me/919900051336" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div></div>
+        <div><h4 data-i18n="footer.quicklinks">Quick Links</h4><ul class="footer-links"><li><a href="index.html" data-i18n="nav.home">Home</a></li><li><a href="about.html" data-i18n="nav.about">About Us</a></li><li><a href="services.html" data-i18n="nav.services">Our Services</a></li><li><a href="gallery.html" data-i18n="nav.gallery">Gallery</a></li><li><a href="contact.html" data-i18n="nav.contact">Contact</a></li></ul></div>
+        <div><h4 data-i18n="footer.services">Services</h4><ul class="footer-links"><li><a href="service-catering.html" data-i18n="services.1.title">Catering & Food Supply</a></li><li><a href="service-fruits.html" data-i18n="services.2.title">Fresh Fruits Supply</a></li><li><a href="service-facilities.html" data-i18n="services.3.title">Facilities Management</a></li><li><a href="service-manpower.html" data-i18n="services.4.title">Manpower Support</a></li><li><a href="service-crockery.html" data-i18n="services.5.title">Crockery & Miscellaneous</a></li><li><a href="service-it.html" data-i18n="services.6.title">IT Sales & Services</a></li><li><a href="service-car.html" data-i18n="services.7.title">Car Consultancy</a></li><li><a href="service-furniture.html" data-i18n="services.8.title">Furnishing & Furniture</a></li><li><a href="service-property.html" data-i18n="services.9.title">Property Brokerage</a></li></ul></div>
+        <div><h4 data-i18n="footer.contact">Contact Info</h4><ul class="footer-contact"><li><i class="fas fa-map-marker-alt"></i> <span data-i18n="footer.address">NO.54/8/13, 8th Cross, C.L.R Layout, R.T Nagar, Bangalore - 560032</span></li><li><i class="fas fa-phone"></i> <a href="tel:9900051336">+91 9900051336</a></li><li><i class="fas fa-envelope"></i> <a href="mailto:Highqservices02@gmail.com">Highqservices02@gmail.com</a></li><li><i class="fas fa-clock"></i> <span data-i18n="footer.hours">Mon - Sat: 9:00 AM - 7:00 PM</span></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span data-i18n="footer.copyright">&copy; 2026 High Q Services. All rights reserved.</span><span data-i18n-html="true" data-i18n="footer.credit">Designed with <i class="fas fa-heart" style="color:var(--color-accent);"></i> in Bangalore</span></div>
+    </div>
+  </footer>
+
+  <div class="whatsapp-float"><div class="tooltip" data-i18n="whatsapp.tooltip">Need help? Chat with us!</div><a href="https://wa.me/919900051336" target="_blank" class="whatsapp-btn" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <div id="chatbotContainer"></div>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>
