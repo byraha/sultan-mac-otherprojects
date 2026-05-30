@@ -1,0 +1,91 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:      # lets you trigger manually from GitHub UI
+
+jobs:
+  # ───────────────────────────────────────────────
+  # Job 1: Deploy all static websites
+  # ───────────────────────────────────────────────
+  deploy-static-sites:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy highq-services
+        run: |
+          rsync -avz --delete highq-services/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/highq-services/
+
+      - name: Deploy sultancloudwebsite
+        run: |
+          rsync -avz --delete sultancloudwebsite/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/sultancloudwebsite/
+
+      - name: Deploy hubgroup
+        run: |
+          rsync -avz --delete hubgroup/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/hubgroup/
+
+      - name: Deploy smpl-edu
+        run: |
+          rsync -avz --delete smpl-edu/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/smpl-edu/
+
+  # ───────────────────────────────────────────────
+  # Job 2: Deploy & restart Node.js shopping app
+  # ───────────────────────────────────────────────
+  deploy-shopping-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Sync app code
+        run: |
+          rsync -avz --delete devops-engine/shopping/nodejs-shopping/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/shopping-app/
+
+      - name: Install deps & restart
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            cd ~/shopping-app
+            npm install --production
+            pm2 restart shopping-app || pm2 start app.js --name shopping-app
+            pm2 save
+          EOF
+
+  # ───────────────────────────────────────────────
+  # Job 3: Deploy terraform configs
+  # ───────────────────────────────────────────────
+  deploy-terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Sync terraform configs
+        run: |
+          rsync -avz --delete terraform/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/terraform/
